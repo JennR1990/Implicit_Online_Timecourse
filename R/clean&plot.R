@@ -148,7 +148,7 @@ plotblockscleaned<- function() {
       # )
       axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
            las = 2)
-      axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+      axis(1, at = c(1, 5, 30, 32, 36), cex.axis = 1.25, las = 2)
       
     }
     dev.off()    
