@@ -49,7 +49,50 @@ plotindividualcurves<- function() {
 
 
 
-
+plotindividualcurvescleaned<- function() {
+  
+  filenames<- c("ana/condition 1 trialtype 1_cuttoff0.3.csv","ana/condition 3 trialtype 1_cuttoff0.3.csv","ana/condition 4 trialtype 1_cuttoff0.3.csv","ana/condition 1 trialtype 1_cuttoff0.7.csv","ana/condition 3 trialtype 1_cuttoff0.7.csv","ana/condition 4 trialtype 1_cuttoff0.7.csv","ana/condition 1 trialtype 0_cuttoff0.7.csv","ana/condition 3 trialtype 0_cuttoff0.7.csv","ana/condition 4 trialtype 0_cuttoff0.7.csv")
+  names<- c("Continuous (.3)", "Terminal (.3)", "Cursor-Jump (.3)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)")
+  task<- c("reaches","reaches","reaches","reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
+  
+  for (i in 1:length(filenames)) {
+    
+    outputname<- sprintf("figs/%s %s_individual_curves_cleaned.jpeg", names[i], task[i])
+    jpeg(outputname, width = 15, height = 15, units = "in", res = 100)
+    filename<- filenames[i]
+    data<-Cleandata(filename)
+    
+    
+    if ( i %% 3 == 0){
+      layout(matrix(c(1:(ncol(data)+1)), nrow=6, byrow=TRUE), heights=c(2,2,2,2,2,2))
+    } else {
+      layout(matrix(c(1:(ncol(data))), nrow=(ncol(data))/3, byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
+    }  
+    for (k in 1:ncol(data)){
+      plot(data[,k], type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
+      lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
+      lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+      # legend(
+      #   5,
+      #   40,
+      #   legend = task[i],
+      #   col = "Blue",
+      #   lty = c(1),
+      #   lwd = c(2),
+      #   bty = 'n',
+      #   cex = 1.25
+      # )
+      axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+           las = 2)
+      axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+      
+    }
+    dev.off()    
+    
+  }
+  
+  
+}
 
 
 
@@ -198,10 +241,10 @@ t.interval = function(data, variance = var(data, na.rm = TRUE), conf.level = 0.9
 Cleandata<- function (filename){
 data<-read.csv(filename, header = TRUE)
 
-aligned<-data[data$rot =="baseline",2:16]
-rot1<-data[data$rot =="rotation",2:16]
-counter<-data[data$rot =="counter",2:16]
-errorclamp<-data[data$rot =="errorclamp",2:16]
+aligned<-data[data$rot =="baseline",2:ncol(data)]
+rot1<-data[data$rot =="rotation",2:ncol(data)]
+counter<-data[data$rot =="counter",2:ncol(data)]
+errorclamp<-data[data$rot =="errorclamp",2:ncol(data)]
 
 
 
