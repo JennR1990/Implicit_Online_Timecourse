@@ -1,5 +1,5 @@
 getpinfo <- function() {
-setwd("~/Desktop/grad/ImplicitProcesses/itcwithW22/itc3tabs/data")
+setwd("/Jenn/Documents/Implicit_Online_Timecourse/data")
 files <- list.files(pattern = "csv")
 participants <- c()
 conditions <- c()
@@ -11,12 +11,18 @@ participants[file] <- unique(df$participant)
 conditions[file] <- unique(df$condition)
 dates[file] <- unique(df$date)
 }
-write.csv(data.frame(participants,conditions,dates,files), file = "/Users/Damar/Desktop/grad/ImplicitProcesses/itcwithW22/itc3tabs/analysis/Participant Info.csv", quote = FALSE, row.names = FALSE)
+write.csv(data.frame(participants,conditions,dates,files), file = "../ana/Participant Info.csv", quote = FALSE, row.names = FALSE)
 return(data.frame(participants,conditions,dates,files))
 }
 
 
-getpangles <- function(cond = 1,type = 1, cutoff = 0.7) {
+#.7 means 70% of the movement out from the target so thats good for endpoints, .3 for the training, 30%
+# anything -15 to 75 for rotation phases
+#-40 to 40 for aligned and clamp
+#quick view, absolute 60.
+#start looking at individual data
+#find a way to look at it per target
+getpangles <- function(cond = 1,type = 1, cutoff = 0.3) {
   newdata <- getpinfo()
 filenames <- newdata$files[newdata$conditions == cond]
 DF <- handleOneFile(filenames[1])
@@ -28,7 +34,7 @@ if (cond == 0) {
 rd <- data.frame(matrix(NA,nrow(DF)/2,length(filenames)))
 }
 rot <- c()
-setwd("~/Desktop/grad/ImplicitProcesses/itcwithW22/itc3tabs/data")
+setwd("/Jenn/Documents/Implicit_Online_Timecourse/data")
 for (file in 1:length(filenames)) {
   filename <- filenames[file]
   #pnum <- pnums[1]
@@ -41,7 +47,7 @@ for (num in 1:length(filenames)) {
   newnames[num] <- sprintf("p%d",num)
 
 }
-setwd("/Users/Damar/Desktop/grad/ImplicitProcesses/itcwithW22/itc3tabs/analysis")
+setwd("/Jenn/Documents/Implicit_Online_Timecourse/ana")
 colnames(rd) <- newnames
 rd <- cbind(rot,rd)
 rd <- data.frame(rd)
@@ -72,7 +78,7 @@ rd[is.na(rd)]<- 110
 #}
 
 rd[rd == 110] <- NA
-outputname <- sprintf("condition %d trialtype %d.csv",cond,type)
+outputname <- sprintf("condition %d trialtype %d_cuttoff%.1f.csv",cond,type, cutoff)
 write.csv(rd,file=outputname,row.names = F,quote = F)
 return(rd)
 
