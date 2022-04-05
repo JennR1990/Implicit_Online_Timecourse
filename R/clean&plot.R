@@ -48,7 +48,6 @@ plotindividualcurves<- function() {
 
 
 
-
 plotindividualcurvescleaned<- function() {
   
   filenames<- c("ana/condition 1 trialtype 1_cuttoff0.3.csv","ana/condition 3 trialtype 1_cuttoff0.3.csv","ana/condition 4 trialtype 1_cuttoff0.3.csv","ana/condition 1 trialtype 1_cuttoff0.7.csv","ana/condition 3 trialtype 1_cuttoff0.7.csv","ana/condition 4 trialtype 1_cuttoff0.7.csv","ana/condition 1 trialtype 0_cuttoff0.7.csv","ana/condition 3 trialtype 0_cuttoff0.7.csv","ana/condition 4 trialtype 0_cuttoff0.7.csv")
@@ -93,15 +92,6 @@ plotindividualcurvescleaned<- function() {
   
   
 }
-
-
-
-
-
-
-
-
-
 
 
 plotcleandataseparately<- function() {
