@@ -320,3 +320,4 @@ errorclamp[errorclamp < -40] <- NA
 alldata<- rbind(aligned,rot1,counter,errorclamp)
 return(alldata)
 }
+

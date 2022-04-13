@@ -55,3 +55,19 @@ summary(rmodel)
 ncmodel <- ANOVAanalysis(nocursorrm)
 summary(ncmodel)
 ```
+
+
+
+
+
+
+```{r plots for CVR poster 2022}
+
+svglite(file="figs/Reach & No-Cursors Across Conditions.svg", width=14, height=5, system_fonts=list(sans = "Arial"))
+layout(matrix(1:2, nrow = 1))
+plotreachestogether()
+plotnocursorstogether()
+dev.off()
+
+
+```
