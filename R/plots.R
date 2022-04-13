@@ -1,4 +1,13 @@
-
+plotschedule<- function(){
+  
+  
+  plot(NULL, xlab = "Trials", ylab = "Perturbation", main = "Rotation Schedule", ylim = c(-45,45), xlim = c(0,144), axes = FALSE, cex.lab = 1.25)
+  lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
+  lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+  axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+       las = 2)
+  axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+}
 
 
 plotdata <- function(filename, cond, task, fun){
