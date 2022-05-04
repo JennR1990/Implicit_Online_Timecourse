@@ -37,10 +37,9 @@ createstartpoints<- function(data) {
 
 #THis combines the data to make it ready for an ANOVA already updated for Sebastian data
 ANOVAcombine<- function(data) {
-  s<-createstartpoints(data)
   ParticipantARM<- data.frame()
   participants <- names(data)[2:dim(data)[2]]
-  epochs <- list('R1_early'=c(s[2],4), 'R1_late'=c(s[3],4), 'R2D2'=c(s[4],4), 'EC'=c(s[5],16))
+  epochs <- list('R1_early'=c(21,4), 'R1_late'=c(117,4), 'R2D2'=c(125,4), 'EC'=c(141,4))
   Reaches<- c()
   Time<- c()
   ID<- c()
@@ -74,7 +73,7 @@ TCombine<- function(data) {
     r2<- unlist(data[26,participant])
     r3<- unlist(data[27,participant])
     r4<- unlist(data[28,participant])
-    R1_Early<- mean(unlist(data[25:32,participant]), na.rm = TRUE)
+    R1_Early<- mean(unlist(data[21:24,participant]), na.rm = TRUE)
     R1_second<-mean(unlist(data[33:40,participant]), na.rm = TRUE) 
     R1_third<- mean(unlist(data[41:48,participant]), na.rm = TRUE)
     R1_forth<-mean(unlist(data[49:56,participant]), na.rm = TRUE) 
