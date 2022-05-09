@@ -63,7 +63,7 @@ summary(ncmodel)
 
 ```{r plots for CVR poster 2022}
 
-svglite(file="figs/Reach & No-Cursors Across Conditions.svg", width=12, height=10, system_fonts=list(sans = "Arial"))
+svglite(file="figs/Reach & No-Cursors Across Conditions.svg", width=12, height=8, system_fonts=list(sans = "Arial"))
 layout(matrix(1:4, nrow = 2, byrow = TRUE))
 plotreachestogether()
 plotnocursorstogether()
@@ -71,6 +71,8 @@ PlotzoomedINreaches()
 PlotzoomedINNocursors()
 dev.off()
 
+svglite(file="figs/Regression Plot.svg", width=4, height=6, system_fonts=list(sans = "Arial"))
 RegressionPLot()
+dev.off()
 
 ```

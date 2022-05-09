@@ -197,7 +197,7 @@ PlotzoomedINNocursors<- function() {
   
   legend(
     .5,
-    -20,
+    -10,
     legend = c("Continuous", "Terminal", "Cursor Jump", "Rotation"),
     col = c("dodgerblue4", "sienna2","mediumseagreen", "Black"),
     lty = c(1),
@@ -286,7 +286,7 @@ points(x = c(rep(3.9, times = length(jdRM$Reaches[jdRM$Time == "EC"]))),y= (jdRM
 
 legend(
   .5,
-  -20,
+  -10,
   legend = c("Continuous", "Terminal", "Cursor Jump", "Rotation"),
   col = c("dodgerblue4", "sienna2","mediumseagreen", "Black"),
   lty = c(1),
@@ -366,10 +366,10 @@ RegressionPLot <- function() {
     axes = FALSE, asp = 1, cex.lab = 1.25
   )
   axis(2,
-       at = c( -45,-30,-15, 0, 15, 30,45),
-       cex.axis = 1.2)
+       at = c( -45,-25, 0, 25,45),
+       cex.axis = 1.2, las = 2)
   axis(1,
-       at = c( -45,-30,-15, 0, 15, 30,45),
+       at = c( -45,-25, 0, 25 ,45),
        cex.axis = 1.2)
   lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
   abline(v = c(0), lty = 3)
