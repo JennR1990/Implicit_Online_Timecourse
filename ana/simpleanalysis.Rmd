@@ -1,23 +1,49 @@
 ---
-title: "Simple Analysis"
+title: "simpleanalysis"
 author: "Jennifer Ruttle"
 date: "5/10/2022"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-```{r}
-rmodel<- ANOVAanalysis(reachanova)
-rmodel
+```{r setup, include=FALSE}
+source('R/analysis.R')
+continuous_reaches<- Cleandata("ana/condition 1 trialtype 1_cuttoff0.7.csv")
+continuous_reaches<- continuous_reaches[,-c(4)]
+terminal_reaches<- Cleandata("ana/condition 3 trialtype 1_cuttoff0.7.csv")
+terminal_reaches<- terminal_reaches[,-c(1)]
+cursorJump_reaches<- Cleandata("ana/condition 4 trialtype 1_cuttoff0.7.csv")
+cursorJump_reaches<- cursorJump_reaches[,-c(6,8,12,13)]
 
-IndependentT(AllData, "Continuous", "Terminal", "Reaches")
-IndependentT(AllData, "Continuous", "CursorJump", "Reaches")
-IndependentT(AllData, "Terminal", "CursorJump", "Reaches")
-
-ncmodel<- ANOVAanalysis(nocursoranova)
-ncmodel
-
-IndependentT(AllData, "Continuous", "Terminal", "No-Cursors")
-IndependentT(AllData, "Continuous", "CursorJump", "No-Cursors")
-IndependentT(AllData, "Terminal", "CursorJump", "No-Cursors")
+continuous_nocursors<- Cleandata("ana/condition 1 trialtype 0_cuttoff0.7.csv")
+continuous_nocursors<- continuous_nocursors[,-c(4)]
+terminal_nocursors<- Cleandata("ana/condition 3 trialtype 0_cuttoff0.7.csv")
+terminal_reaches<- terminal_reaches[,-c(1)]
+cursorJump_nocursors<- Cleandata("ana/condition 4 trialtype 0_cuttoff0.7.csv")
+cursorJump_nocursors<- cursorJump_nocursors[,-c(6,8,12,13)]
 ```
 
+## R Markdown
+
+```{r analysis set up}
+anovadata<- PrepdataforANOVA()
+
+TtestData<- PrepdataforT()
+```
+
+
+```{r analysis interpretation}
+rmodel<- ANOVAanalysis(anovadata[anovadata$Task == "Reaches",])
+rmodel
+ncmodel<- ANOVAanalysis(anovadata[anovadata$Task == "No-Cursors",])
+ncmodel
+
+IndependentT(TtestData, "Continuous", "Terminal", "Reaches")
+IndependentT(TtestData, "Continuous", "CursorJump", "Reaches")
+IndependentT(TtestData, "Terminal", "CursorJump", "Reaches")
+
+IndependentT(TtestData, "Continuous", "Terminal", "No-Cursors")
+IndependentT(TtestData, "Continuous", "CursorJump", "No-Cursors")
+IndependentT(TtestData, "Terminal", "CursorJump", "No-Cursors")
+```

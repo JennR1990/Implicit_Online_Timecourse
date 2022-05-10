@@ -117,28 +117,28 @@ TCombine<- function(data) {
 
 #these codes below will run the combine functions above on every condition and put it together for analysis. 
 
-PrepdataforANOVA <- function(conditions = c(1,3,4), type = 0) {
-  AllRM<- data.frame()
-
-  for (cond in conditions){
-    
-  filename<- sprintf("ana/condition %d trialtype %d_cuttoff0.7.csv", cond, type)
-  data<- Cleandata(filename)
-  RM<-ANOVAcombine(data)
-  RM$Experiment <- rep(sprintf("%d", cond), nrow(RM))  
+PrepdataforANOVA <- function() {
   
+  continuousR_RM<-ANOVAcombine(continuous_reaches)
+  continuousR_RM$Experiment<- rep("Continuous", times = nrow(continuousR_RM))
+  terminalR_RM<-ANOVAcombine(terminal_reaches)
+  terminalR_RM$Experiment<- rep("Terminal", times = nrow(terminalR_RM))
+  cursorJumpR_RM<-ANOVAcombine(cursorJump_reaches)
+  cursorJumpR_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpR_RM))
   
-  if (nrow(AllRM) == 0) {
-  AllRM<- RM
-  } else {
-    AllRM<- rbind(AllRM, RM)
-    
-  }
-  }
+  continuousNC_RM<-ANOVAcombine(continuous_nocursors)
+  continuousNC_RM$Experiment<- rep("Continuous", times = nrow(continuousNC_RM))
+  terminalNC_RM<-ANOVAcombine(terminal_nocursors)
+  terminalNC_RM$Experiment<- rep("Terminal", times = nrow(terminalNC_RM))
+  cursorJumpNC_RM<-ANOVAcombine(cursorJump_nocursors)
+  cursorJumpNC_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpNC_RM))
   
+  AllData<- rbind(continuousR_RM,terminalR_RM,cursorJumpR_RM,continuousNC_RM,terminalNC_RM,cursorJumpNC_RM)
   
-
-  return(AllRM)
+  AllData$Task <- c(rep("Reaches", times = sum(nrow(continuousR_RM),nrow(terminalR_RM),nrow(cursorJumpR_RM) )),
+                    rep("No-Cursors", times = sum(nrow(continuousNC_RM),nrow(terminalNC_RM),nrow(cursorJumpNC_RM) )))
+  
+  return(AllData)
   
 }
 

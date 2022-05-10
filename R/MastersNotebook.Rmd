@@ -98,34 +98,25 @@ cursorJump_nocursors<- cursorJump_nocursors[,-c(6,8,12,13)]
 
 ```{r setting up analysis}
 
-reachanova<- PrepdataforANOVA(type =1)
-nocursoranova<- PrepdataforANOVA(type =0)
-
-
-reachanova$Experiment[reachanova$Experiment == 1] <- "Continuous"
-reachanova$Experiment[reachanova$Experiment == 3] <- "Terminal"
-reachanova$Experiment[reachanova$Experiment == 4] <- "CursorJump"
-
-nocursoranova$Experiment[nocursoranova$Experiment == 1] <- "Continuous"
-nocursoranova$Experiment[nocursoranova$Experiment == 3] <- "Terminal"
-nocursoranova$Experiment[nocursoranova$Experiment == 4] <- "CursorJump"
+anovadata<- PrepdataforANOVA()
 
 TtestData<- PrepdataforT()
 ```
 
 
 ```{r running analysis}
-ncmodel<- ANOVAanalysis(nocursoranova)
-rmodel<- ANOVAanalysis(reachanova)
+rmodel<- ANOVAanalysis(anovadata[anovadata$Task == "Reaches",])
+rmodel
+ncmodel<- ANOVAanalysis(anovadata[anovadata$Task == "No-Cursors",])
+ncmodel
 
+IndependentT(TtestData, "Continuous", "Terminal", "Reaches")
+IndependentT(TtestData, "Continuous", "CursorJump", "Reaches")
+IndependentT(TtestData, "Terminal", "CursorJump", "Reaches")
 
-IndependentT(AllData, "Continuous", "Terminal", "Reaches")
-IndependentT(AllData, "Continuous", "CursorJump", "Reaches")
-IndependentT(AllData, "Terminal", "CursorJump", "Reaches")
-
-IndependentT(AllData, "Continuous", "Terminal", "No-Cursors")
-IndependentT(AllData, "Continuous", "CursorJump", "No-Cursors")
-IndependentT(AllData, "Terminal", "CursorJump", "No-Cursors")
+IndependentT(TtestData, "Continuous", "Terminal", "No-Cursors")
+IndependentT(TtestData, "Continuous", "CursorJump", "No-Cursors")
+IndependentT(TtestData, "Terminal", "CursorJump", "No-Cursors")
 
   
 
