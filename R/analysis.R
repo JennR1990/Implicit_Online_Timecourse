@@ -1,3 +1,31 @@
+Cleandata<- function (filename){
+  data<-read.csv(filename, header = TRUE)
+  
+  aligned<-data[data$rot =="baseline",2:ncol(data)]
+  rot1<-data[data$rot =="rotation",2:ncol(data)]
+  counter<-data[data$rot =="counter",2:ncol(data)]
+  errorclamp<-data[data$rot =="errorclamp",2:ncol(data)]
+  
+  
+  
+  aligned[aligned > 40] <- NA
+  aligned[aligned < -40] <- NA
+  
+  rot1[rot1 < -75]<- NA
+  rot1[rot1 >  15]<- NA
+  
+  counter[counter < -30]<- NA
+  counter[counter >  75]<- NA
+  
+  errorclamp[errorclamp > 40] <- NA
+  errorclamp[errorclamp < -40] <- NA
+  
+  
+  alldata<- rbind(aligned,rot1,counter,errorclamp)
+  return(alldata)
+}
+
+
 #here i am trying to find the locations to do the analysis at for Sebastian Data (may need to set working directory of whever the data is. )
 createstartpoints<- function(data) {
  # dat<-read.csv("condition 1 trialtype 0.csv", header = TRUE)
@@ -133,7 +161,7 @@ PrepdataforT <- function() {
   AllData<- rbind(continuousR_RM,terminalR_RM,cursorJumpR_RM,continuousNC_RM,terminalNC_RM,cursorJumpNC_RM)
   
   AllData$Task <- c(rep("Reaches", times = sum(nrow(continuousR_RM),nrow(terminalR_RM),nrow(cursorJumpR_RM) )),
-                    rep("No-Cursors", times = sum(nrow(continuousR_RM),nrow(terminalR_RM),nrow(cursorJumpR_RM) )))
+                    rep("No-Cursors", times = sum(nrow(continuousNC_RM),nrow(terminalNC_RM),nrow(cursorJumpNC_RM) )))
   
   
   
@@ -166,31 +194,31 @@ ANOVAanalysis<- function(AllDataANOVA){
 IndependentT<- function(data, cond1, cond2, type) {
   library(effsize)
   library(SMCL)
-  print(sprintf('this is the between subjects comparison of condition %d to %d type %d Data', cond1, cond2, type))
+  print(sprintf('this is the between subjects comparison of condition %s to %s %s Data', cond1, cond2, type))
   print('Aligned')
-  print(t.test(data$Aligned[data$Experiment == cond1],data$Aligned[data$Experiment == cond2])) #not sig A vs. NC
-  print(cohen.d(data$Aligned[data$Experiment == cond1],data$Aligned[data$Experiment == cond2], na.rm = TRUE))
-  print(etaSquaredTtest(data$Aligned[data$Experiment == cond1],data$Aligned[data$Experiment == cond2], na.rm = TRUE))
+  print(t.test(data$Aligned[data$Experiment == cond1 & data$Task == type],data$Aligned[data$Experiment == cond2 & data$Task == type])) #not sig A vs. NC
+  print(cohen.d(data$Aligned[data$Experiment == cond1 & data$Task == type],data$Aligned[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
+  print(etaSquaredTtest(data$Aligned[data$Experiment == cond1 & data$Task == type],data$Aligned[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
   print('Beginning of 1st rotation')
-  print(t.test(data$R1_Early[data$Experiment == cond1],data$R1_Early[data$Experiment == cond2])) # p-value = 0.04535 A vs. NC
-  print(cohen.d(data$R1_Early[data$Experiment == cond1],data$R1_Early[data$Experiment == cond2], na.rm = TRUE))
-  print(etaSquaredTtest(data$R1_Early[data$Experiment == cond1],data$R1_Early[data$Experiment == cond2], na.rm = TRUE))
+  print(t.test(data$R1_Early[data$Experiment == cond1 & data$Task == type],data$R1_Early[data$Experiment == cond2 & data$Task == type])) # p-value = 0.04535 A vs. NC
+  print(cohen.d(data$R1_Early[data$Experiment == cond1 & data$Task == type],data$R1_Early[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
+  print(etaSquaredTtest(data$R1_Early[data$Experiment == cond1 & data$Task == type],data$R1_Early[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
   print('End of 1st rotation')
-  print(t.test(data$R1_Late[data$Experiment == cond1],data$R1_Late[data$Experiment == cond2])) # not sig A vs. NC
-  print(cohen.d(data$R1_Late[data$Experiment == cond1],data$R1_Late[data$Experiment == cond2], na.rm = TRUE))
-  print(etaSquaredTtest(data$R1_Late[data$Experiment == cond1],data$R1_Late[data$Experiment == cond2], na.rm = TRUE))
+  print(t.test(data$R1_Late[data$Experiment == cond1 & data$Task == type],data$R1_Late[data$Experiment == cond2 & data$Task == type])) # not sig A vs. NC
+  print(cohen.d(data$R1_Late[data$Experiment == cond1 & data$Task == type],data$R1_Late[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
+  print(etaSquaredTtest(data$R1_Late[data$Experiment == cond1 & data$Task == type],data$R1_Late[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
   print('Beginning of 2nd rotation')
-  print(t.test(data$R2[data$Experiment == cond1],data$R2[data$Experiment == cond2])) # not sig  A vs. NC
-  print(cohen.d(data$R2[data$Experiment == cond1],data$R2[data$Experiment == cond2], na.rm = TRUE))
-  print(etaSquaredTtest(data$R2[data$Experiment == cond1],data$R2[data$Experiment == cond2], na.rm = TRUE))
+  print(t.test(data$R2[data$Experiment == cond1 & data$Task == type],data$R2[data$Experiment == cond2 & data$Task == type])) # not sig  A vs. NC
+  print(cohen.d(data$R2[data$Experiment == cond1 & data$Task == type],data$R2[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
+  print(etaSquaredTtest(data$R2[data$Experiment == cond1 & data$Task == type],data$R2[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
   print('Beginning of Error Clamp')
-  print(t.test(data$EC[data$Experiment == cond1],data$EC[data$Experiment == cond2])) # p-value = 0.005945  A vs. NC
-  print(cohen.d(data$EC[data$Experiment == cond1],data$EC[data$Experiment == cond2], na.rm = TRUE))
-  print(etaSquaredTtest(data$EC[data$Experiment == cond1],data$EC[data$Experiment == cond2], na.rm = TRUE))
+  print(t.test(data$EC[data$Experiment == cond1 & data$Task == type],data$EC[data$Experiment == cond2 & data$Task == type])) # p-value = 0.005945  A vs. NC
+  print(cohen.d(data$EC[data$Experiment == cond1 & data$Task == type],data$EC[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
+  print(etaSquaredTtest(data$EC[data$Experiment == cond1 & data$Task == type],data$EC[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
   print('End of Error Clamp (32 trials)')
-  print(t.test(data$EC_Late[data$Experiment == cond1],data$EC_Late[data$Experiment == cond2]))  #p-value = 1.36e-07  A vs. NC
-  print(cohen.d(data$EC_Late[data$Experiment == cond1],data$EC_Late[data$Experiment == cond2], na.rm = TRUE))
-  print(etaSquaredTtest(data$EC_Late[data$Experiment == cond1],data$EC_Late[data$Experiment == cond2], na.rm = TRUE))
+  print(t.test(data$EC_Late[data$Experiment == cond1 & data$Task == type],data$EC_Late[data$Experiment == cond2 & data$Task == type]))  #p-value = 1.36e-07  A vs. NC
+  print(cohen.d(data$EC_Late[data$Experiment == cond1 & data$Task == type],data$EC_Late[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
+  print(etaSquaredTtest(data$EC_Late[data$Experiment == cond1 & data$Task == type],data$EC_Late[data$Experiment == cond2 & data$Task == type], na.rm = TRUE))
   
 }
 

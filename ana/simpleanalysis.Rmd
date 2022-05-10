@@ -1,0 +1,23 @@
+---
+title: "Simple Analysis"
+author: "Jennifer Ruttle"
+date: "5/10/2022"
+output: pdf_document
+---
+
+```{r}
+rmodel<- ANOVAanalysis(reachanova)
+rmodel
+
+IndependentT(AllData, "Continuous", "Terminal", "Reaches")
+IndependentT(AllData, "Continuous", "CursorJump", "Reaches")
+IndependentT(AllData, "Terminal", "CursorJump", "Reaches")
+
+ncmodel<- ANOVAanalysis(nocursoranova)
+ncmodel
+
+IndependentT(AllData, "Continuous", "Terminal", "No-Cursors")
+IndependentT(AllData, "Continuous", "CursorJump", "No-Cursors")
+IndependentT(AllData, "Terminal", "CursorJump", "No-Cursors")
+```
+

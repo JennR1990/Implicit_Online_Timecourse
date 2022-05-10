@@ -109,10 +109,24 @@ reachanova$Experiment[reachanova$Experiment == 4] <- "CursorJump"
 nocursoranova$Experiment[nocursoranova$Experiment == 1] <- "Continuous"
 nocursoranova$Experiment[nocursoranova$Experiment == 3] <- "Terminal"
 nocursoranova$Experiment[nocursoranova$Experiment == 4] <- "CursorJump"
+
+TtestData<- PrepdataforT()
 ```
 
 
 ```{r running analysis}
 ncmodel<- ANOVAanalysis(nocursoranova)
 rmodel<- ANOVAanalysis(reachanova)
+
+
+IndependentT(AllData, "Continuous", "Terminal", "Reaches")
+IndependentT(AllData, "Continuous", "CursorJump", "Reaches")
+IndependentT(AllData, "Terminal", "CursorJump", "Reaches")
+
+IndependentT(AllData, "Continuous", "Terminal", "No-Cursors")
+IndependentT(AllData, "Continuous", "CursorJump", "No-Cursors")
+IndependentT(AllData, "Terminal", "CursorJump", "No-Cursors")
+
+  
+
 ```
