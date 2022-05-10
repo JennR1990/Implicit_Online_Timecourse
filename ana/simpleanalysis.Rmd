@@ -1,13 +1,22 @@
 ---
-title: "simpleanalysis"
+title: "Simple Analysis"
 author: "Jennifer Ruttle"
 date: "5/10/2022"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Here is all the analysis for the implicit time course experiment as of May 10th, 2022
+
+```{r }
 source('R/analysis.R')
 continuous_reaches<- Cleandata("ana/condition 1 trialtype 1_cuttoff0.7.csv")
 continuous_reaches<- continuous_reaches[,-c(4)]
@@ -22,18 +31,11 @@ terminal_nocursors<- Cleandata("ana/condition 3 trialtype 0_cuttoff0.7.csv")
 terminal_reaches<- terminal_reaches[,-c(1)]
 cursorJump_nocursors<- Cleandata("ana/condition 4 trialtype 0_cuttoff0.7.csv")
 cursorJump_nocursors<- cursorJump_nocursors[,-c(6,8,12,13)]
-```
 
-## R Markdown
-
-```{r analysis set up}
 anovadata<- PrepdataforANOVA()
 
 TtestData<- PrepdataforT()
-```
-
-
-```{r analysis interpretation}
+library("ez")
 rmodel<- ANOVAanalysis(anovadata[anovadata$Task == "Reaches",])
 rmodel
 ncmodel<- ANOVAanalysis(anovadata[anovadata$Task == "No-Cursors",])
@@ -46,4 +48,5 @@ IndependentT(TtestData, "Terminal", "CursorJump", "Reaches")
 IndependentT(TtestData, "Continuous", "Terminal", "No-Cursors")
 IndependentT(TtestData, "Continuous", "CursorJump", "No-Cursors")
 IndependentT(TtestData, "Terminal", "CursorJump", "No-Cursors")
+
 ```
