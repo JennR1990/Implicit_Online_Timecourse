@@ -38,7 +38,7 @@ createstartpoints<- function(data) {
 #THis combines the data to make it ready for an ANOVA already updated for Sebastian data
 ANOVAcombine<- function(data) {
   ParticipantARM<- data.frame()
-  participants <- names(data)[2:dim(data)[2]]
+  participants <- names(data)[1:dim(data)[2]]
   epochs <- list('R1_early'=c(21,4), 'R1_late'=c(117,4), 'R2D2'=c(125,4), 'EC'=c(141,4))
   Reaches<- c()
   Time<- c()
@@ -66,28 +66,15 @@ ANOVAcombine<- function(data) {
 #This combines the data into the format needed to do t-tests in R (Needs to be updated for Sebastian Data)
 TCombine<- function(data) {
   ParticipantRM<- data.frame()
-  participants <- c(2:ncol(data))
+  participants <- c(1:ncol(data))
   for (participant in participants){
-    Aligned<- mean(unlist(data[17:24,participant]), na.rm = TRUE)
-    r1<- unlist(data[25,participant])
-    r2<- unlist(data[26,participant])
-    r3<- unlist(data[27,participant])
-    r4<- unlist(data[28,participant])
+    Aligned<- mean(unlist(data[17:20,participant]), na.rm = TRUE)
     R1_Early<- mean(unlist(data[21:24,participant]), na.rm = TRUE)
-    R1_second<-mean(unlist(data[33:40,participant]), na.rm = TRUE) 
-    R1_third<- mean(unlist(data[41:48,participant]), na.rm = TRUE)
-    R1_forth<-mean(unlist(data[49:56,participant]), na.rm = TRUE) 
-    R1_fifth<- mean(unlist(data[57:64,participant]), na.rm = TRUE)
-    R1_sixth<-mean(unlist(data[65:72,participant]), na.rm = TRUE) 
-    R1_Late<- mean(unlist(data[117:124,participant]), na.rm = TRUE)
-    R2<- mean(unlist(data[125:132,participant]), na.rm = TRUE)
-    EC<- mean(unlist(data[133:140,participant]), na.rm = TRUE)
-    EC1<- mean(unlist(data[141,participant]), na.rm = TRUE)
-    EC2<- mean(unlist(data[142,participant]), na.rm = TRUE)
-    EC3<- mean(unlist(data[143,participant]), na.rm = TRUE)
-    EC4<- mean(unlist(data[144,participant]), na.rm = TRUE)
-    EC_Late<- mean(unlist(data[141:148,participant]), na.rm = TRUE)
-    RM<- data.frame(Aligned, r1, r2,r3,r4, R1_Early, R1_second, R1_third, R1_forth, R1_fifth, R1_sixth, R1_Late, R2, EC, EC_Late, EC1, EC2, EC3, EC4)
+    R1_Late<- mean(unlist(data[117:120,participant]), na.rm = TRUE)
+    R2<- mean(unlist(data[125:128,participant]), na.rm = TRUE)
+    EC<- mean(unlist(data[129:132,participant]), na.rm = TRUE)
+    EC_Late<- mean(unlist(data[141:144,participant]), na.rm = TRUE)
+    RM<- data.frame(Aligned,R1_Early, R1_Late, R2, EC, EC_Late)
     if (prod(dim(ParticipantRM)) == 0) {
       ParticipantRM <- RM
     } else {
@@ -102,13 +89,13 @@ TCombine<- function(data) {
 
 #these codes below will run the combine functions above on every condition and put it together for analysis. 
 
-PrepdataforANOVA <- function(conditions = c(0,1,3,4,5), type = 0) {
+PrepdataforANOVA <- function(conditions = c(1,3,4), type = 0) {
   AllRM<- data.frame()
 
   for (cond in conditions){
     
-  filename<- sprintf("condition %d trialtype %d.csv", cond, type)
-  data<- read.csv(filename, header = TRUE)
+  filename<- sprintf("ana/condition %d trialtype %d_cuttoff0.7.csv", cond, type)
+  data<- Cleandata(filename)
   RM<-ANOVAcombine(data)
   RM$Experiment <- rep(sprintf("%d", cond), nrow(RM))  
   
@@ -120,31 +107,37 @@ PrepdataforANOVA <- function(conditions = c(0,1,3,4,5), type = 0) {
     
   }
   }
+  
+  
 
   return(AllRM)
   
 }
 
-PrepdataforT <- function(conditions = c(0,1,3,4,5), type = 0) {
-  AllRM<- data.frame()
+PrepdataforT <- function() {
+  continuousR_RM<-TCombine(continuous_reaches)
+  continuousR_RM$Experiment<- rep("Continuous", times = nrow(continuousR_RM))
+  terminalR_RM<-TCombine(terminal_reaches)
+  terminalR_RM$Experiment<- rep("Terminal", times = nrow(terminalR_RM))
+  cursorJumpR_RM<-TCombine(cursorJump_reaches)
+  cursorJumpR_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpR_RM))
   
-  for (cond in conditions){
-    
-    filename<- sprintf("condition %d trialtype %d.csv", cond, type)
-    data<- read.csv(filename, header = TRUE)
-    RM<-TCombine(data)
-    RM$Experiment <- rep(sprintf("%d", cond), nrow(RM))  
-    
-    
-    if (nrow(AllRM) == 0) {
-      AllRM<- RM
-    } else {
-      AllRM<- rbind(AllRM, RM)
-      
-    }
-  }
   
-  return(AllRM)
+  continuousNC_RM<-TCombine(continuous_nocursors)
+  continuousNC_RM$Experiment<- rep("Continuous", times = nrow(continuousNC_RM))
+  terminalNC_RM<-TCombine(terminal_nocursors)
+  terminalNC_RM$Experiment<- rep("Terminal", times = nrow(terminalNC_RM))
+  cursorJumpNC_RM<-TCombine(cursorJump_nocursors)
+  cursorJumpNC_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpNC_RM))
+  
+  AllData<- rbind(continuousR_RM,terminalR_RM,cursorJumpR_RM,continuousNC_RM,terminalNC_RM,cursorJumpNC_RM)
+  
+  AllData$Task <- c(rep("Reaches", times = sum(nrow(continuousR_RM),nrow(terminalR_RM),nrow(cursorJumpR_RM) )),
+                    rep("No-Cursors", times = sum(nrow(continuousR_RM),nrow(terminalR_RM),nrow(cursorJumpR_RM) )))
+  
+  
+  
+  return(AllData)
   
 }
 
@@ -152,6 +145,7 @@ PrepdataforT <- function(conditions = c(0,1,3,4,5), type = 0) {
 
 #This code actually runs the ANOVA once we run other functions first. To run this code you need to run prepdataforANOVA and assign that to a variable "data" and run ANOVAanalysis(data) 
 ANOVAanalysis<- function(AllDataANOVA){
+  AllDataANOVA$Time<- as.factor(AllDataANOVA$Time)
   AllDataANOVA$ID<- as.factor(AllDataANOVA$ID)
   AllDataANOVA$Experiment<- as.factor(AllDataANOVA$Experiment)
   fullmodel <- ezANOVA(data=AllDataANOVA,
@@ -163,6 +157,10 @@ ANOVAanalysis<- function(AllDataANOVA){
                        return_aov=TRUE)
   return(fullmodel)
 }
+
+
+
+
 
 # to run this code you have to run Prepdata for T and assign it to a variable named RM then run this line of code IndependentT(RM, 1,1,0)
 IndependentT<- function(data, cond1, cond2, type) {

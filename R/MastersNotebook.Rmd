@@ -76,3 +76,43 @@ RegressionPLot()
 dev.off()
 
 ```
+
+
+```{r load data}
+continuous_reaches<- Cleandata("ana/condition 1 trialtype 1_cuttoff0.7.csv")
+continuous_reaches<- continuous_reaches[,-c(4)]
+terminal_reaches<- Cleandata("ana/condition 3 trialtype 1_cuttoff0.7.csv")
+terminal_reaches<- terminal_reaches[,-c(1)]
+cursorJump_reaches<- Cleandata("ana/condition 4 trialtype 1_cuttoff0.7.csv")
+cursorJump_reaches<- cursorJump_reaches[,-c(6,8,12,13)]
+
+continuous_nocursors<- Cleandata("ana/condition 1 trialtype 0_cuttoff0.7.csv")
+continuous_nocursors<- continuous_nocursors[,-c(4)]
+terminal_nocursors<- Cleandata("ana/condition 3 trialtype 0_cuttoff0.7.csv")
+terminal_reaches<- terminal_reaches[,-c(1)]
+cursorJump_nocursors<- Cleandata("ana/condition 4 trialtype 0_cuttoff0.7.csv")
+cursorJump_nocursors<- cursorJump_nocursors[,-c(6,8,12,13)]
+```
+
+
+
+```{r setting up analysis}
+
+reachanova<- PrepdataforANOVA(type =1)
+nocursoranova<- PrepdataforANOVA(type =0)
+
+
+reachanova$Experiment[reachanova$Experiment == 1] <- "Continuous"
+reachanova$Experiment[reachanova$Experiment == 3] <- "Terminal"
+reachanova$Experiment[reachanova$Experiment == 4] <- "CursorJump"
+
+nocursoranova$Experiment[nocursoranova$Experiment == 1] <- "Continuous"
+nocursoranova$Experiment[nocursoranova$Experiment == 3] <- "Terminal"
+nocursoranova$Experiment[nocursoranova$Experiment == 4] <- "CursorJump"
+```
+
+
+```{r running analysis}
+ncmodel<- ANOVAanalysis(nocursoranova)
+rmodel<- ANOVAanalysis(reachanova)
+```
