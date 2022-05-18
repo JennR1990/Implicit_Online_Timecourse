@@ -151,13 +151,13 @@ asymptoticDecaySettings <- function() {
   baselines <- list(
     'continuous'       = list( 'nocursors'=20, 'slowprocess'=20, 'reaches'=20 ),
     'terminal'        = c('nocursors'=20,      'slowprocess'=20,    'reaches'=20),
-    'cursorjump'        = c('nocursors'=20)
+    'cursorjump'        = c('nocursors'=20,      'slowprocess'=20,    'reaches'=20)
   )
   
   schedules <- list( 
     'continuous'       = list( 'nocursors'=  -1, 'slowprocess'=  1, 'reaches'= -1 ),
     'terminal'        = c('nocursors'=-1,      'slowprocess'=1,    'reaches'=-1),
-    'cursorjump'        = c('nocursors'=-1)
+    'cursorjump'        = c('nocursors'=-1,      'slowprocess'=1,    'reaches'=-1)
   )
   
   optimxInstalled <- require("optimx")
@@ -198,10 +198,10 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
       participants <- sprintf('p%d',c(1:15))
     }
     if (group == 'terminal') {
-      participants <- sprintf('p%d',c(1:14))
+      participants <- sprintf('p%d',c(2:15))
     }
     if (group == 'cursorjump') {
-      participants <- sprintf('p%d',c(1:13))
+      participants <- sprintf('p%d',c(1:15))
     }
 
     
@@ -315,7 +315,7 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
           
         }
         
-        write.csv(data.frame(lambda, N0), file=sprintf('data/%s_%s_%s_semi.csv',group,signalname,trialset), quote=F, row.names=F)
+        write.csv(data.frame(lambda, N0), file=sprintf('model_data/%s_%s_%s_semi.csv',group,signalname,trialset), quote=F, row.names=F)
         
       }
       

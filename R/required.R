@@ -32,33 +32,59 @@ loaddata<- function() {
   
   schedule<- c(rep(0, times = 20), rep(45, times = 100), rep(-45, times = 8), rep(NA, times = 16))
   continuous_reaches<<- cbind(schedule,Cleandata('ana/condition 1 trialtype 1_cuttoff0.7.csv'))
-  #continuous_reaches<<- continuous_reaches[,-c(4)]
+  #continuous_reaches<<- subset(continuous_reaches, select = -p4)
   terminal_reaches<<- cbind(schedule,Cleandata('ana/condition 3 trialtype 1_cuttoff0.7.csv'))
-  terminal_reaches<<- terminal_reaches[,-c(1)]
+  terminal_reaches<<- subset(terminal_reaches, select = -p1)
   cursorjump_reaches<<- cbind(schedule,Cleandata('ana/condition 4 trialtype 1_cuttoff0.7.csv'))
-  cursorjump_reaches<<- cursorjump_reaches[,-c(6,8,12,13)]
+  cursorjump_reaches<<- subset(cursorjump_reaches, select = -c(p6,p12))
   
   continuous_nocursors<<- cbind(schedule,Cleandata('ana/condition 1 trialtype 0_cuttoff0.7.csv'))
-  #continuous_nocursors<<- continuous_nocursors[,-c(4)]
+  #continuous_nocursors<<- subset(continuous_nocursors, select = -p4)
   terminal_nocursors<<- cbind(schedule,Cleandata('ana/condition 3 trialtype 0_cuttoff0.7.csv'))
-  terminal_nocursors<<- terminal_nocursors[,-c(1)]
+  terminal_nocursors<<- subset(terminal_nocursors, select = -p1)
   cursorjump_nocursors<<- cbind(schedule,Cleandata('ana/condition 4 trialtype 0_cuttoff0.7.csv'))
-  cursorjump_nocursors<<- cursorjump_nocursors[,-c(6,8,12,13)]
+  cursorjump_nocursors<<- subset(cursorjump_nocursors, select = -c(p6,p12))
   
 }
 
 
 getslowprocesses<- function() {
   schedule<- c(rep(0, times = 20), rep(45, times = 100), rep(-45, times = 8), rep(NA, times = 16))
-pars<-  fitTwoRateReachModel(reaches = as.numeric(unlist(rowMeans(continuous_reaches[2:ncol(continuous_reaches)], na.rm = TRUE))), schedule = schedule)
-csp<-twoRateReachModel(pars, schedule)$slow
-write.csv(csp, file = "ana/continuous slow process.csv", quote = FALSE, row.names = FALSE)
+  
+##need slow process for each person
+csp<-c()  
+for (p in 2:ncol (continuous_reaches)) {
+  reaches<- continuous_reaches[,p]
+pars<-  fitTwoRateReachModel(reaches = reaches, schedule = schedule)
+csp<-cbind(csp,twoRateReachModel(pars, schedule)$slow)
+}
+csp<- data.frame(csp)
+cnames<- names(continuous_reaches[2:ncol(continuous_reaches)])
+names(csp)<- cnames
+write.csv(csp, file = "ana/continuous_slowprocess.csv", quote = FALSE, row.names = FALSE)
 
-pars<-  fitTwoRateReachModel(reaches = as.numeric(unlist(rowMeans(terminal_reaches[2:ncol(terminal_reaches)], na.rm = TRUE))), schedule = schedule)
-tsp<-twoRateReachModel(pars, schedule)$slow
-write.csv(tsp, file = "ana/terminal slow process.csv", quote = FALSE, row.names = FALSE)
 
-pars<-  fitTwoRateReachModel(reaches = as.numeric(unlist(rowMeans(cursorjump_reaches[2:ncol(cursorjump_reaches)], na.rm = TRUE))), schedule = schedule)
-cjsp<-twoRateReachModel(pars, schedule)$slow
-write.csv(cjsp, file = "ana/cursorjump slow process.csv", quote = FALSE, row.names = FALSE)
+
+tsp<-c()  
+for (p in 2:ncol (terminal_reaches)) {
+  reaches<- terminal_reaches[,p]
+  pars<-  fitTwoRateReachModel(reaches = reaches, schedule = schedule)
+  tsp<-cbind(tsp,twoRateReachModel(pars, schedule)$slow)
+}
+tsp<- data.frame(tsp)
+cnames<- names(terminal_reaches[2:ncol(terminal_reaches)])
+names(tsp)<- cnames
+write.csv(tsp, file = "ana/terminal_slowprocess.csv", quote = FALSE, row.names = FALSE)
+
+
+cjsp<-c()  
+for (p in 2:ncol (cursorjump_reaches)) {
+  reaches<- cursorjump_reaches[,p]
+  pars<-  fitTwoRateReachModel(reaches = reaches, schedule = schedule)
+  cjsp<-cbind(cjsp,twoRateReachModel(pars, schedule)$slow)
+}
+cjsp<- data.frame(cjsp)
+cnames<- names(cursorjump_reaches[2:ncol(cursorjump_reaches)])
+names(cjsp)<- cnames
+write.csv(cjsp, file = "ana/cursorjump_slowprocess.csv", quote = FALSE, row.names = FALSE)
 }
