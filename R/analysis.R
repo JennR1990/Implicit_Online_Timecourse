@@ -66,8 +66,8 @@ createstartpoints<- function(data) {
 #THis combines the data to make it ready for an ANOVA already updated for Sebastian data
 ANOVAcombine<- function(data) {
   ParticipantARM<- data.frame()
-  participants <- names(data)[1:dim(data)[2]]
-  epochs <- list('R1_early'=c(21,4), 'R1_late'=c(117,4), 'R2D2'=c(125,4), 'EC'=c(141,4))
+  participants <- names(data)[2:dim(data)[2]]
+  epochs <- list('R1_early'=c(21,4), 'R1_late'=c(105,16), 'R2D2'=c(125,4), 'EC'=c(129,16))
   Reaches<- c()
   Time<- c()
   ID<- c()
@@ -94,14 +94,14 @@ ANOVAcombine<- function(data) {
 #This combines the data into the format needed to do t-tests in R (Needs to be updated for Sebastian Data)
 TCombine<- function(data) {
   ParticipantRM<- data.frame()
-  participants <- c(1:ncol(data))
+  participants <- c(2:ncol(data))
   for (participant in participants){
     Aligned<- mean(unlist(data[17:20,participant]), na.rm = TRUE)
     R1_Early<- mean(unlist(data[21:24,participant]), na.rm = TRUE)
-    R1_Late<- mean(unlist(data[117:120,participant]), na.rm = TRUE)
+    R1_Late<- mean(unlist(data[105:120,participant]), na.rm = TRUE)
     R2<- mean(unlist(data[125:128,participant]), na.rm = TRUE)
     EC<- mean(unlist(data[129:132,participant]), na.rm = TRUE)
-    EC_Late<- mean(unlist(data[141:144,participant]), na.rm = TRUE)
+    EC_Late<- mean(unlist(data[129:144,participant]), na.rm = TRUE)
     RM<- data.frame(Aligned,R1_Early, R1_Late, R2, EC, EC_Late)
     if (prod(dim(ParticipantRM)) == 0) {
       ParticipantRM <- RM
@@ -123,14 +123,14 @@ PrepdataforANOVA <- function() {
   continuousR_RM$Experiment<- rep("Continuous", times = nrow(continuousR_RM))
   terminalR_RM<-ANOVAcombine(terminal_reaches)
   terminalR_RM$Experiment<- rep("Terminal", times = nrow(terminalR_RM))
-  cursorJumpR_RM<-ANOVAcombine(cursorJump_reaches)
+  cursorJumpR_RM<-ANOVAcombine(cursorjump_reaches)
   cursorJumpR_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpR_RM))
   
   continuousNC_RM<-ANOVAcombine(continuous_nocursors)
   continuousNC_RM$Experiment<- rep("Continuous", times = nrow(continuousNC_RM))
   terminalNC_RM<-ANOVAcombine(terminal_nocursors)
   terminalNC_RM$Experiment<- rep("Terminal", times = nrow(terminalNC_RM))
-  cursorJumpNC_RM<-ANOVAcombine(cursorJump_nocursors)
+  cursorJumpNC_RM<-ANOVAcombine(cursorjump_nocursors)
   cursorJumpNC_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpNC_RM))
   
   AllData<- rbind(continuousR_RM,terminalR_RM,cursorJumpR_RM,continuousNC_RM,terminalNC_RM,cursorJumpNC_RM)
@@ -147,7 +147,7 @@ PrepdataforT <- function() {
   continuousR_RM$Experiment<- rep("Continuous", times = nrow(continuousR_RM))
   terminalR_RM<-TCombine(terminal_reaches)
   terminalR_RM$Experiment<- rep("Terminal", times = nrow(terminalR_RM))
-  cursorJumpR_RM<-TCombine(cursorJump_reaches)
+  cursorJumpR_RM<-TCombine(cursorjump_reaches)
   cursorJumpR_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpR_RM))
   
   
@@ -155,7 +155,7 @@ PrepdataforT <- function() {
   continuousNC_RM$Experiment<- rep("Continuous", times = nrow(continuousNC_RM))
   terminalNC_RM<-TCombine(terminal_nocursors)
   terminalNC_RM$Experiment<- rep("Terminal", times = nrow(terminalNC_RM))
-  cursorJumpNC_RM<-TCombine(cursorJump_nocursors)
+  cursorJumpNC_RM<-TCombine(cursorjump_nocursors)
   cursorJumpNC_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpNC_RM))
   
   AllData<- rbind(continuousR_RM,terminalR_RM,cursorJumpR_RM,continuousNC_RM,terminalNC_RM,cursorJumpNC_RM)

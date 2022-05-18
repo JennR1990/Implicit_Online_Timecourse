@@ -131,106 +131,14 @@ asymptoticDecayFit <- function(schedule, signal, gridpoints=11, gridfits=10, set
 
 # bootstrapping parameters -----
 
-# bootstrapAsymptoticDecayModels <- function(bootstraps=1000) {
-#   
-#   groupsignals <- list('active'=c('localization','slowprocess'),
-#                        'passive'=c('localization','slowprocess'),
-#                        'nocursor'=c('nocursors','slowprocess'))
-#   
-#   # reversel == 16 trials
-#   trialsets <- list('main'=c(1:32), 'reversal'=c(161:176))
-#   
-#   baselines <- list(
-#     'nocursor' = list( 'nocursors'   =32, 'slowprocess'=96 ), 
-#     'active'   = list( 'localization'=64, 'slowprocess'=64 ),
-#     'passive'  = list( 'localization'=64, 'slowprocess'=64 )
-#   )
-#   
-#   schedules <- list( 
-#     'nocursor' = list( 'nocursors'   = -1, 'slowprocess'=  1 ), 
-#     'active'   = list( 'localization'=  1, 'slowprocess'=  1 ),
-#     'passive'  = list( 'localization'=  1, 'slowprocess'=  1 ) 
-#   )
-#   
-#   participants <- sprintf('p%d',c(1:32))
-#   
-#   # loop through groups:
-#   for (group in names(groupsignals)) {
-#     
-#     # do each signal for each group
-#     for (signalname in groupsignals[[group]]) {
-#       
-#       # read in the full data set:
-#       df <- read.csv(sprintf('data/%s_%s.csv',group,signalname))
-#       
-#       # determine length of baseline period and schedule-direction:
-#       BL <- baselines[[group]][[signalname]]
-#       schedulesign <- schedules[[group]][[signalname]]
-#       
-#       # loop through parts of the signal we want to fit:
-#       for (trialset in c('main','reversal')) {
-# 
-#         # get the part of the data we want to fit:
-#         indices <- trialsets[[trialset]] + BL
-#         setdf <- df[indices,]
-#         
-#         # here we store all the bootstrapped parameters:
-#         lambda <- c()
-#         N0 <- c()
-#         
-#         # we need to baseline to end of main training for reversal modeling:
-#         for (pp in participants) {
-#           setdf[,pp] <- setdf[,pp] * schedulesign
-#           if (trialset == 'reversal') { # main training is already baselined
-#             if (signalname == 'slowprocess') {
-#               setdf[,pp] <- setdf[,pp] - df[,pp][ min(indices) - 1 ]
-#             } else {
-#               a_i <- c(81:160) + BL
-#               asymptote <- (mean(df[,pp][a_i], na.rm=TRUE) * schedulesign)
-#               setdf[,pp] <- setdf[,pp] - asymptote
-#             }
-#             setdf[,pp] <- setdf[,pp] * -1
-#           }
-#         }
-#         # baselining done
-#         
-#         # schedule is a vector of values -1 and length the same as the signal:
-#         schedule <- rep(-1, dim(setdf)[1])
-#         
-#         # bootstrap parameters, by resampling participants:
-#         for (bs in c(1:bootstraps)) {
-#         
-#           cat(sprintf('group: %s, signal: %s, set: %s, bootstrap: %d/%d\n', group, signalname, trialset, bs, bootstraps))
-#           
-#           signal <- apply(setdf[sample(participants, replace=TRUE)], MARGIN=1, FUN=mean, na.rm=TRUE)
-#           
-#           par <- asymptoticDecayFit(schedule=schedule, signal=signal)
-#           
-#           #plot(signal, type='l', main=par)
-#           #print(par)
-#           
-#           lambda <- c(lambda, par['lambda'])
-#           N0 <- c(N0, par['N0'])
-# 
-#         }
-#         
-#         write.csv(data.frame(lambda, N0), file=sprintf('data/%s_%s_%s.csv',group,signalname,trialset), quote=F, row.names=F)
-#         
-#       }
-#       
-#     }
-#     
-#   }
-#   
-# }
 
 asymptoticDecaySettings <- function() {
   
   # this list determines which signals get done for each group
   groupsignals <- list(
-     'passive'       = c('localization', 'slowprocess', 'reaches'),
-    'terminal'        = c('localization', 'slowprocess', 'reaches'),
-    'exposure'        = c('localization')
+     'continuous'       = c('nocursors', 'slowprocess', 'reaches'),
+    'terminal'        = c('nocursors', 'slowprocess', 'reaches'),
+    'cursorjump'        = c('nocursors', 'slowprocess', 'reaches')
   )
   # this list determines which signals get done for each group
 
@@ -238,18 +146,18 @@ asymptoticDecaySettings <- function() {
 
   
   # we used to run it on the reversal phase too, but it takes so much time...
-  trialsets <- list('main'=c(1:160), 'reversal'=c(161:176))
+  trialsets <- list('main'=c(1:100), 'reversal'=c(101:108))
 
   baselines <- list(
-    'passive'       = list( 'localization'=64, 'slowprocess'=64, 'reaches'=64 ),
-    'terminal'        = c('localization'=64,      'slowprocess'=64,    'reaches'=96),
-    'exposure'        = c('localization'=64)
+    'continuous'       = list( 'nocursors'=20, 'slowprocess'=20, 'reaches'=20 ),
+    'terminal'        = c('nocursors'=20,      'slowprocess'=20,    'reaches'=20),
+    'cursorjump'        = c('nocursors'=20)
   )
   
   schedules <- list( 
-    'passive'       = list( 'localization'=  1, 'slowprocess'=  1, 'reaches'= -1 ),
-    'terminal'        = c('localization'=1,      'slowprocess'=1,    'reaches'=-1),
-    'exposure'        = c('localization'=1)
+    'continuous'       = list( 'nocursors'=  -1, 'slowprocess'=  1, 'reaches'= -1 ),
+    'terminal'        = c('nocursors'=-1,      'slowprocess'=1,    'reaches'=-1),
+    'cursorjump'        = c('nocursors'=-1)
   )
   
   optimxInstalled <- require("optimx")
@@ -271,7 +179,7 @@ asymptoticDecaySettings <- function() {
   
 }
 
-bootstrapSemiAsymptoticDecayModels <- function(bootstraps=1000) {
+bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
   
   settings <- asymptoticDecaySettings()
   
@@ -286,18 +194,16 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=1000) {
   for (group in names(groupsignals)) {
     
     participants <- sprintf('p%d',c(1:32))
-    if (group == 'nocursor') {
-      participants <- sprintf('p%d',c(1:48))
+    if (group == 'continuous') {
+      participants <- sprintf('p%d',c(1:15))
     }
-    if (group == 'nocursor-in16') {
-      participants <- sprintf('p%d',c(1:16))
+    if (group == 'terminal') {
+      participants <- sprintf('p%d',c(1:14))
     }
-    if (group == 'nocursor-47') {
-      participants <- sprintf('p%d',c(1:39,41:48))
+    if (group == 'cursorjump') {
+      participants <- sprintf('p%d',c(1:13))
     }
-    if (group == 'nocursor-in15') {
-      participants <- sprintf('p%d',c(1:7,9:16))
-    }
+
     
     # do each signal for each group
     for (signalname in groupsignals[[group]]) {
@@ -316,7 +222,7 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=1000) {
       # read in the full data set:
       print(group)
       print(signalname)
-      df <- read.csv(sprintf('data/%s_%s.csv',group,signalname))
+      df <- read.csv(sprintf('ana/%s_%s.csv',group,signalname))
       df <- df[,participants]
       
       # determine length of baseline period and schedule-direction:
@@ -390,6 +296,7 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=1000) {
           cat(sprintf('group: %s, signal: %s, set: %s, bootstrap: %d/%d\n', group, signalname, trialset, bs, bootstraps))
           
           signal <- apply(setdf[sample(participants, replace=TRUE)], MARGIN=1, FUN=FUN, na.rm=TRUE)
+          
           if (leadingzero) {signal <- c(0, signal)}
           
           #print(c(length(signal), length(schedule)))
