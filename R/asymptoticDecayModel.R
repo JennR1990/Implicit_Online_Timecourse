@@ -356,17 +356,15 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
   for (groupname in names(groupsignals)) {
     
     participants <- sprintf('p%d',c(1:32))
-    if (groupname == 'nocursor') {
-      participants <- sprintf('p%d',c(1:48))
+
+    if (group == 'continuous') {
+      participants <- sprintf('p%d',c(1:15))
     }
-    if (groupname == 'nocursor-in16') {
-      participants <- sprintf('p%d',c(1:16))
+    if (group == 'terminal') {
+      participants <- sprintf('p%d',c(2:15))
     }
-    if (groupname == 'nocursor-47') {
-      participants <- sprintf('p%d',c(1:39,41:48))
-    }
-    if (groupname == 'nocursor-in15') {
-      participants <- sprintf('p%d',c(1:7,9:16))
+    if (group == 'cursorjump') {
+      participants <- sprintf('p%d',c(1:15))
     }
     
     # do each signal for each group
@@ -455,7 +453,7 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
         } else {
           sstr <- ''
         }
-        df <- read.csv(sprintf('data/%s_%s_%s%s.csv', groupname, signalname, trialset, sstr), stringsAsFactors = F)
+        df <- read.csv(sprintf('model_data/%s_%s_%s%s.csv', groupname, signalname, trialset, sstr), stringsAsFactors = F)
         
         group <- c(group, groupname)
         signal <- c(signal, signalname)
@@ -485,14 +483,14 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
   write.csv(data.frame( group, signal, phase,
                         lambda, lambda_025, lambda_500, lambda_975,
                         N0, N0_025, N0_500, N0_975),
-            file='data/asymptoticDecayParameterCIs.csv',
+            file='ana/asymptoticDecayParameterCIs.csv',
             quote = F, row.names = F)
      
 }
 
 getSaturationTrials <- function(criterion='CI') {
   
-  df <- read.csv('data/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
+  df <- read.csv('ana/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
   df <- df[which(df$phase == 'main'),]
   
   settings <- asymptoticDecaySettings()
@@ -594,7 +592,7 @@ getSaturationTrials <- function(criterion='CI') {
   
   df <- data.frame(group, signal, avg, lwr, upr)
   
-  write.csv(df, 'data/saturation_trials.csv', row.names = FALSE, quote = FALSE)
+  write.csv(df, 'ana/saturation_trials.csv', row.names = FALSE, quote = FALSE)
   
 }
 
