@@ -155,9 +155,9 @@ asymptoticDecaySettings <- function() {
   )
   
   schedules <- list( 
-    'continuous'       = list( 'nocursors'=  -1, 'slowprocess'=  1, 'reaches'= -1 ),
-    'terminal'        = c('nocursors'=-1,      'slowprocess'=1,    'reaches'=-1),
-    'cursorjump'        = c('nocursors'=-1,      'slowprocess'=1,    'reaches'=-1)
+    'continuous'       = list( 'nocursors'=  -1, 'slowprocess'=  -1, 'reaches'= -1 ),
+    'terminal'        = c('nocursors'=-1,      'slowprocess'=-1,    'reaches'=-1),
+    'cursorjump'        = c('nocursors'=-1,      'slowprocess'=-1,    'reaches'=-1)
   )
   
   optimxInstalled <- require("optimx")
@@ -248,7 +248,7 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
             if (signalname == 'slowprocess') {
               setdf[,pp] <- setdf[,pp] - df[,pp][ min(indices) - 1 ]
             } else {
-              a_i <- c(81:160) + BL
+              a_i <- c(51:100) + BL
               asymptote <- (mean(df[,pp][a_i], na.rm=TRUE) * schedulesign)
               setdf[,pp] <- setdf[,pp] - asymptote
             }
@@ -357,13 +357,13 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
     
     participants <- sprintf('p%d',c(1:32))
 
-    if (group == 'continuous') {
+    if (groupname == 'continuous') {
       participants <- sprintf('p%d',c(1:15))
     }
-    if (group == 'terminal') {
+    if (groupname == 'terminal') {
       participants <- sprintf('p%d',c(2:15))
     }
-    if (group == 'cursorjump') {
+    if (groupname == 'cursorjump') {
       participants <- sprintf('p%d',c(1:15))
     }
     
@@ -378,7 +378,7 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
       }
       
       # read in the full data set:
-      rawdf <- read.csv(sprintf('data/%s_%s.csv',groupname,signalname))
+      rawdf <- read.csv(sprintf('ana/%s_%s.csv',groupname,signalname))
       rawdf <- rawdf[,participants]
       
       # determine length of baseline period and schedule-direction:
@@ -400,7 +400,7 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
             if (signalname == 'slowprocess') {
               setdf[,pp] <- setdf[,pp] - rawdf[,pp][ min(indices) - 1 ]
             } else {
-              a_i <- c(81:160) + BL
+              a_i <- c(51:100) + BL
               asymptote <- (mean(rawdf[,pp][a_i], na.rm=TRUE) * schedulesign)
               setdf[,pp] <- setdf[,pp] - asymptote
             }
@@ -600,69 +600,76 @@ getStyles <- function() {
   
   styles <- list()
   
-  ## Active
-  
-  styles[['active']] <- list(
-    'solid'=rgb(1.0, 0.4, 0.0),         # orange
-    'trans'=rgb(1.0, 0.4, 0.0, 0.1),    # transparent orange
-    'label'='active localization'
-  )
-  
-  ## Passive
-  
-  styles[['passive']] <- list(
-    'solid'=rgb(0.7, 0.0, 0.7),          # purple
-    'trans'=rgb(0.7, 0.0, 0.7, 0.2),     # transparent purple
-    'label'='passive localization'
-  )
-
-  ## Pause
-  
-  styles[['pause']] <- list(
-    'solid'=rgb(0.1, 0.3, 0.5),         # Blue
-    'trans'=rgb(0.1, 0.3, 0.5, 0.1),     # transparent Blue
-    'label'='pause'
-  )
-
-  ## No-Cursor
-  
-  styles[['nocursor-47']] <- list(
-    'solid'=rgb(0.0, 0.7, 0.0),         # green
-    'trans'=rgb(0.0, 0.7, 0.0, 0.2),     # transparent green
-    'label'='no-cursor'
-  )
-  
-  ## Reaches
-  
-  styles[['reaches']] <- list(
-    'solid'=rgb(0,0,0),                 # black
-    'trans'=rgb(0,0,0,0.2),             # gray
-    'label'='reaches'
-  )
-  
   ## Terminal
   
-  styles[['terminal']] <- list(
-    'solid'=rgb(1, 0.0, 0.0),         # Red
-    'trans'=rgb(1, 0.0, 0., 0.1),     # transparent Red
-    'label'='no-cursor'
+  styles[['terminal reaches']] <- list(
+    'solid'=rgb(0.93, 0.47, .26),         # orange
+    'trans'=rgb(0.93, 0.47, .26, 0.1),    # transparent orange
+    'label'='terminal reaches'
   )
   
-  ## Exposure
+ 
   
-  styles[['exposure']] <- list(
-    'solid'=rgb(0.85, 0.65, 0.12),         # Red
-    'trans'=rgb(0.85, 0.65, 0.12, 0.2),     # transparent Red
-    'label'='no-cursor'
+  styles[['terminal nocursors']] <- list(
+    'solid'=rgb(0.93, 0.47, .26),         # orange
+    'trans'=rgb(0.93, 0.47, .26, 0.1),    # transparent orange
+    'label'='terminal nocursors'
+  )
+
+
+  
+  styles[['terminal slowprocess']] <- list(
+    'solid'=rgb(0.93, 0.47, .26),         # orange
+    'trans'=rgb(0.93, 0.47, .26, 0.1),    # transparent orange
+    'label'='terminal slowprocess'
+  )
+
+ ##Continuous
+  
+  styles[['continuous reaches']] <- list(
+    'solid'=rgb(0.04, 0.3, .5),         # green
+    'trans'=rgb(0.04, 0.3, .5, 0.1),     # transparent green
+    'label'='continuous reaches'
+  )
+  
+ 
+  
+  styles[['continuous nocursors']] <- list(
+    'solid'=rgb(0.04, 0.3, .5),         # green
+    'trans'=rgb(0.04, 0.3, .5, 0.1),     # transparent green
+    'label'='continuous nocursors'
   )
   
 
-  ## Slow Process
   
-  styles[['slowprocess']] <- list(
-    'solid'=rgb(0.63, 0.71, 0.81),      # blue-gray
-    'trans'=rgb(0.63, 0.71, 0.81, 0.2),  # transparent blue-gray
-    'label'='slow process'
+  styles[['continuous slowprocess']] <- list(
+    'solid'=rgb(0.04, 0.3, .5),         # green
+    'trans'=rgb(0.04, 0.3, .5, 0.1),     # transparent green
+    'label'='continuous slowprocess'
+  )
+  
+  ### Cursorjump
+  
+  styles[['cursorjump reaches']] <- list(
+    'solid'=rgb(0.23, 0.70, .44),         # Red
+    'trans'=rgb(0.23, 0.70, .44, 0.2),     # transparent Red
+    'label'='cursorjump reaches'
+  )
+  
+
+  
+  
+  styles[['cursorjump nocursors']] <- list(
+    'solid'=rgb(0.23, 0.70, .44),         # Red
+    'trans'=rgb(0.23, 0.70, .44, 0.2),     # transparent Red
+    'label'='cursorjump nocursors'
+    
+  )
+  
+  styles[['cursorjump slowprocess']] <- list(
+    'solid'=rgb(0.23, 0.70, .44),         # Red
+    'trans'=rgb(0.23, 0.70, .44, 0.2),     # transparent Red
+    'label'='cursorjump slowprocess'
     
   )
   
@@ -678,33 +685,33 @@ plotSaturation <- function(xscale='normal', target='svg') {
   fonts <- list(sans = "Arial", mono = "Arial")
   if (target == 'svg') {
     library('svglite')
-    svglite::svglite(file='figs/Presentation Figure.svg', width=8, height=6, bg='white', system_fonts=fonts)
+    svglite::svglite(file='figs/Saturation Plot.svg', width=8, height=6, bg='white', system_fonts=fonts)
     
   }
   if (target == 'pdf') {
-    pdf(file='figs/AbstractFig.pdf', width=8, height=6, bg='white')
+    pdf(file='figs/Saturation Plot.pdf', width=8, height=6, bg='white')
     
   }
   if (target == 'eps') {
-    postscript(file='figs/AbstractFig.eps', bg='white', width=8, height=6, paper='special', horizontal=FALSE)
+    postscript(file='figs/Saturation Plot.eps', bg='white', width=8, height=6, paper='special', horizontal=FALSE)
     
   }
   
   if (target == 'tiff') {
-    tiff(filename='figs/AbstractFig.tiff', res=600, width=6, height=4.5, units='in', compression='lzw')
+    tiff(filename='figs/Saturation Plot.tiff', res=600, width=6, height=4.5, units='in', compression='lzw')
     
   } 
   
   
-  df <- read.csv('data/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
+  df <- read.csv('ana/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
   df <- df[which(df$phase == 'main'),]
   
   settings <- asymptoticDecaySettings()
   
   groupsignals <- list(
-    'passive'       = c('reaches','localization', 'slowprocess'),
-    'terminal'   = c('localization'),
-    'exposure'         = c('localization')
+    'continuous'       = c('nocursors', 'reaches'),
+    'terminal'        = c('nocursors',  'reaches'),
+    'cursorjump'        = c('nocursors', 'reaches')
   )
   
   trialsets    <- settings[['trialsets']]
@@ -734,18 +741,19 @@ plotSaturation <- function(xscale='normal', target='svg') {
     plot(-1000,-1000,
          xlab='trials completed in rotated phase',ylab='percentage of saturation',
          main='modeled process speeds',
-         xlim=c(0,20),ylim=c(0,1.1),
+         xlim=c(0,35),ylim=c(0,1.1),
          bty='n',ax=F)
     TIME <- seq(0,160,.1)  
     xcoords <- TIME
     
   }
   
-  groupcolors <- c(styles$passive$solid,
-                   styles$terminal$solid,
-                   styles$exposure$solid,
-                   "black",
-                   styles$slowprocess$solid)
+  groupcolors <- c(styles$'continuous reaches'$solid,
+                   styles$'continuous nocursors'$solid,
+                   styles$'terminal reaches'$solid,
+                   styles$'terminal nocursors'$solid,
+                   styles$'cursorjump reaches'$solid,
+                   styles$'cursorjump nocursors'$solid)
   
   # loop through groups:
   for (groupname in names(groupsignals)) {
@@ -819,9 +827,10 @@ plotSaturation <- function(xscale='normal', target='svg') {
         solid <- NA
         trans <- NA
         
-        if (signalname %in% names(styles)) {
-          solid <- styles[[signalname]]$solid
-          trans <- styles[[signalname]]$trans
+        targetstyle<- sprintf("%s %s",groupname,signalname)
+        if (targetstyle %in% names(styles)) {
+          solid <- styles[[targetstyle]]$solid
+          trans <- styles[[targetstyle]]$trans
         } else {
           if (groupname %in% names(styles)) {
             solid <- styles[[groupname]]$solid
@@ -832,6 +841,8 @@ plotSaturation <- function(xscale='normal', target='svg') {
         #print(c(solid,trans))
         
         polygon(X,Y,col=trans,border=NA)
+        
+        
         
         avg <- processes[['lambda']]
         av_idx <- which(avg >= 1)[1]
@@ -851,7 +862,7 @@ plotSaturation <- function(xscale='normal', target='svg') {
     lines(c(1,80),c(1,1),col='black',lty=1,lw=2)
     text(60,1.05,'asymptote lower bound')
     
-    legend(22,.4,legend=c('passive localization', 'reach training', 'slow process'),col=groupcolors,lty=c(1,1,1,1,1),bty='n')
+    legend(22,.8,legend=c('Continuous reaches', 'Continuous nocursors', 'Continuous slow process','Terminal reaches', 'Terminal nocursors', 'Terminal slow process','CursorJump reaches', 'CursorJump nocursors', 'CursorJump slow process'),col=groupcolors,lty=c(1,1,1,1,1,1,1,1,1),bty='n')
     
     axis(side=1, at=c(1,2,3,4,5,6,11,21,41,81), labels=sprintf('%d',c(0,1,2,3,4,5,10,20,40,80)))
     axis(side=2, at=seq(0,1,0.2), labels=sprintf('%d',round(seq(0,1,0.2)*100)))
@@ -862,12 +873,12 @@ plotSaturation <- function(xscale='normal', target='svg') {
     
     polygon(c(0,20,20,0),c(1,1,2,2),col='white',border=NA)
     
-    lines(c(0,20),c(1,1),col='black',lty=1,lw=2)
-    text(20,1.05,'asymptote lower bound',adj=c(1,0.5))
+    lines(c(0,35),c(1,1),col='black',lty=1,lw=2)
+    text(35,1.05,'asymptote lower bound',adj=c(1,0.5))
     
-    legend(11,1.03,legend=c('Continuous-Localization',  'Terminal-Localization', 'Exposure-Localization', 'Reaches','Slowprocess'),col=groupcolors,lty=c(1,1,1,1,1),bty='n', cex = .85)
+    legend(22,.4,legend=c('Continuous reaches', 'Continuous nocursors','Terminal reaches', 'Terminal nocursors','CursorJump reaches', 'CursorJump nocursors'),col=groupcolors,lty=c(1,1,1,1,1,1),bty='n')
     
-    axis(side=1, at=c(0,5,10,15,20), labels=c('baseline',sprintf('%d',c(5,10,15,20))))
+    axis(side=1, at=c(0,5,10,15,20,25,30,35), labels=c('baseline',sprintf('%d',c(5,10,15,20,25,30,35))))
     axis(side=2, at=seq(0,1,0.2), labels=sprintf('%d',round(seq(0,1,0.2)*100)),las = 2)
     
   }
