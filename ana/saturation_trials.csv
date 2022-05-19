@@ -1,0 +1,10 @@
+group,signal,avg,lwr,upr
+continuous,nocursors,28,22,39
+continuous,slowprocess,100,84,100
+continuous,reaches,25,16,44
+terminal,nocursors,7,6,13
+terminal,slowprocess,31,23,37
+terminal,reaches,100,55,100
+cursorjump,nocursors,27,11,46
+cursorjump,slowprocess,23,19,31
+cursorjump,reaches,75,61,100
