@@ -5,6 +5,7 @@ participants <- c()
 conditions <- c()
 dates <- c()
 for (file in 1:length(files)) {
+  print(file)
 filename <- files[file]
 df <- read.csv(filename,header = TRUE)
 participants[file] <- unique(df$participant)
