@@ -1,21 +1,12 @@
 
 plotreachestogether<- function() {
-cd<- read.csv('ana/condition 1 trialtype 1_cuttoff0.7.csv', header = TRUE)
-cd1<- Cleandata('ana/condition 1 trialtype 1_cuttoff0.7.csv')
-cd<-data.frame(cd$rot[17:160],cd1)
-rm(cd1)
-td<- read.csv('ana/condition 3 trialtype 1_cuttoff0.7.csv', header = TRUE)
-td1<- Cleandata('ana/condition 3 trialtype 1_cuttoff0.7.csv')
-td<-data.frame(td$rot[17:160],td1)
-rm(td1)
-jd<- read.csv('ana/condition 4 trialtype 1_cuttoff0.7.csv', header = TRUE)
-jd1<- Cleandata('ana/condition 4 trialtype 1_cuttoff0.7.csv')
-jd<-data.frame(jd$rot[17:160],jd1)
-jd<- jd[,-c(6,8,13)]
-rm(jd1)
+  source('R/clean&plot.R')
+cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
+td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
+jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
 
-plot(rowMeans(cd[,3:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "Reaches", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.25)
-data<- cd[,3:16]
+plot(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "Reaches", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.5)
+data<- cd[,2:16]
 dataCIs <- trialCI(data = data)
 dataCIs <- dataCIs*-1
 x <-  c(c(1:144), rev(c(1:144)))
@@ -25,8 +16,8 @@ polygon(x, y, col = rgb(0.04, 0.3, .5, 0.2), border = NA)
 lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
 lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
 
-lines(rowMeans(td[,3:16]*-1, na.rm=TRUE), type = "l", col = "sienna2")
-data<- td[,3:16]
+lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+data<- td[,2:15]
 dataCIs <- trialCI(data = data)
 dataCIs <- dataCIs*-1
 x <-  c(c(1:144), rev(c(1:144)))
@@ -34,21 +25,21 @@ y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
 polygon(x, y, col = rgb(0.93, 0.47, .26, 0.2), border = NA)
 
 #plot(rowMeans(jd[17:160,2:18]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-lines(rowMeans(jd[,2:15]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-data<- jd[,2:15]
+lines(rowMeans(jd[,2:16]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
+data<- jd[,2:16]
 dataCIs <- trialCI(data = data)
 dataCIs <- dataCIs*-1
 x <-  c(c(1:144), rev(c(1:144)))
 y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
 polygon(x, y, col = rgb(0.23, 0.70, .44, 0.2), border = NA)
 
-lines(rowMeans(cd[,3:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
-lines(rowMeans(td[,3:16]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+lines(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
+lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
 
 legend(
   5,
   -15,
-  legend = c("Continuous", "Terminal", "Cursor Jump"),
+  legend = c("Continuous, n=15", "Terminal, n=14", "Cursor Jump, n=15"),
   col = c("Dodgerblue4","sienna2", "mediumseagreen"),
   lty = c(1,1,1),
   lwd = c(2,2,2),
@@ -62,19 +53,13 @@ axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
 }
 
 plotnocursorstogether<- function() {
-  cd<- read.csv('ana/condition 1 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  cd1<- Cleandata('ana/condition 1 trialtype 0_cuttoff0.7.csv')
-  cd<-data.frame(cd$rot[17:160],cd1)
-  td<- read.csv('ana/condition 3 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  td1<- Cleandata('ana/condition 3 trialtype 0_cuttoff0.7.csv')
-  td<-data.frame(td$rot[17:160],td1)
-  jd<- read.csv('ana/condition 4 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  jd1<- Cleandata('ana/condition 4 trialtype 0_cuttoff0.7.csv')
-  jd<-data.frame(jd$rot[17:160],jd1)
-  jd<- jd[,-c(6,8,13)]
+  source('R/clean&plot.R')
+  cd<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
+  td<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
+  jd<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
   
-  plot(rowMeans(cd[,3:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "No-Cursors", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.25)
-  data<- cd[,3:16]
+  plot(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "No-Cursors", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.5)
+  data<- cd[,2:16]
   dataCIs <- trialCI(data = data)
   dataCIs <- dataCIs*-1
   x <-  c(c(1:144), rev(c(1:144)))
@@ -84,8 +69,8 @@ plotnocursorstogether<- function() {
   lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
   lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
   
-  lines(rowMeans(td[,3:16]*-1, na.rm=TRUE), type = "l", col = "sienna2")
-  data<- td[,3:16]
+  lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+  data<- td[,2:15]
   dataCIs <- trialCI(data = data)
   dataCIs <- dataCIs*-1
   x <-  c(c(1:144), rev(c(1:144)))
@@ -93,21 +78,21 @@ plotnocursorstogether<- function() {
   polygon(x, y, col = rgb(0.93, 0.47, .26, 0.2), border = NA)
   
   #plot(rowMeans(jd[17:160,2:18]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-  lines(rowMeans(jd[,2:15]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-  data<- jd[,2:15]
+  lines(rowMeans(jd[,2:16]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
+  data<- jd[,2:16]
   dataCIs <- trialCI(data = data)
   dataCIs <- dataCIs*-1
   x <-  c(c(1:144), rev(c(1:144)))
   y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
   polygon(x, y, col = rgb(0.23, 0.70, .44, 0.2), border = NA)
   
-  lines(rowMeans(cd[,3:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
-  lines(rowMeans(td[,3:16]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+  lines(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
+  lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
   
   legend(
     5,
     -15,
-    legend = c("Continuous", "Terminal", "Cursor Jump"),
+    legend = c("Continuous, n=15", "Terminal, n=14", "Cursor Jump, n=15"),
     col = c("Dodgerblue4","sienna2", "mediumseagreen"),
     lty = c(1,1,1),
     lwd = c(2,2,2),
@@ -123,20 +108,10 @@ plotnocursorstogether<- function() {
 
 
 PlotzoomedINNocursors<- function() {
-  
-  cd<- read.csv('ana/condition 1 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  cd1<- Cleandata('ana/condition 1 trialtype 0_cuttoff0.7.csv')
-  cd<-data.frame(cd$rot[17:160],cd1)
-  rm(cd1)
-  td<- read.csv('ana/condition 3 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  td1<- Cleandata('ana/condition 3 trialtype 0_cuttoff0.7.csv')
-  td<-data.frame(td$rot[17:160],td1)
-  rm(td1)
-  jd<- read.csv('ana/condition 4 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  jd1<- Cleandata('ana/condition 4 trialtype 0_cuttoff0.7.csv')
-  jd<-data.frame(jd$rot[17:160],jd1)
-  jd<- jd[,-c(6,8,13)]
-  rm(jd1)
+  source('R/analysis.R')
+  cd<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
+  td<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
+  jd<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
   
   cdRM<-ANOVAcombine(cd)
   tdRM<-ANOVAcombine(td)
@@ -212,21 +187,11 @@ PlotzoomedINNocursors<- function() {
 
 
 PlotzoomedINreaches<- function() {
-
-cd<- read.csv('ana/condition 1 trialtype 1_cuttoff0.7.csv', header = TRUE)
-cd1<- Cleandata('ana/condition 1 trialtype 1_cuttoff0.7.csv')
-cd<-data.frame(cd$rot[17:160],cd1)
-rm(cd1)
-td<- read.csv('ana/condition 3 trialtype 1_cuttoff0.7.csv', header = TRUE)
-td1<- Cleandata('ana/condition 3 trialtype 1_cuttoff0.7.csv')
-td<-data.frame(td$rot[17:160],td1)
-rm(td1)
-jd<- read.csv('ana/condition 4 trialtype 1_cuttoff0.7.csv', header = TRUE)
-jd1<- Cleandata('ana/condition 4 trialtype 1_cuttoff0.7.csv')
-jd<-data.frame(jd$rot[17:160],jd1)
-jd<- jd[,-c(6,8,13)]
-rm(jd1)
-
+  source('R/analysis.R')
+  cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
+  td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
+  jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
+  
 cdRM<-ANOVAcombine(cd)
 tdRM<-ANOVAcombine(td)
 jdRM<-ANOVAcombine(jd)
@@ -302,24 +267,101 @@ legend(
 
 
 
+RegressionPLotEL <- function() {
+  source('R/analysis.R')
+  ##Get no-cursor data
+  cdnc<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
+  tdnc<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
+  jdnc<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
+  
+  cdRM<-ANOVAcombine(cdnc)
+  Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]
+  tdRM<-ANOVAcombine(tdnc)
+  Termnc<-tdRM$Reaches[tdRM$Time == "R1_late"]
+  jdRM<-ANOVAcombine(jdnc)
+  Jumpnc<-jdRM$Reaches[jdRM$Time == "R1_late"]
+  
+  ##get reach data
+  
+  cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
+  td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
+  jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
+  
+  cdRMR<-ANOVAcombine(cd)
+  ContR<-cdRMR$Reaches[cdRMR$Time == "R1_late"]
+  tdRMR<-ANOVAcombine(td)
+  TermR<-tdRMR$Reaches[tdRMR$Time == "R1_late"]
+  jdRMR<-ANOVAcombine(jd)
+  JumpR<-jdRMR$Reaches[jdRMR$Time == "R1_late"]
+  
+  
+  
+  
+  
+  plot(
+    Contnc ~ ContR,
+    col = "dodgerblue4",
+    ylab = 'No-Cursors',
+    xlab = 'Reaches',
+    main = 'Regression During Late Learning',
+    xlim = c(-45, 45),
+    ylim = c(-45, 45),
+    axes = FALSE, asp = 1, cex.lab = 1.25
+  )
+  axis(2,
+       at = c( -45,-25, 0, 25,45),
+       cex.axis = 1.2, las = 2)
+  axis(1,
+       at = c( -45,-25, 0, 25 ,45),
+       cex.axis = 1.2)
+  lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
+  abline(v = c(0), lty = 3)
+  lm<-plotRegressionWithCI(ContR, Contnc, colors = c(rgb(0.04, 0.3, .5, 0.2), 'dodgerblue4'))
+  pr<-summary(lm)$r.squared
+  print(summary(lm)$coefficients[2,4])
+  
+  
+  points(Jumpnc ~ JumpR, col = "mediumseagreen" )
+  em<-plotRegressionWithCI(JumpR, Jumpnc, colors = c(rgb(0.23, 0.70, .44, 0.2), "mediumseagreen"))
+  er<-summary(em)$r.squared
+  print(summary(em)$coefficients[2,4])
+  
+  
+  points(Termnc ~ TermR, col = "Sienna2")
+  tm<-plotRegressionWithCI(TermR, Termnc, colors = c(rgb(0.93, 0.47, .26, 0.2), "sienna2"))
+  tr<-summary(tm)$r.squared
+  print(summary(tm)$coefficients[2,4])
+  
+  
+  
+  label1<- sprintf("Continuous, r2=%.2f", pr)
+  label2<- sprintf("Terminal, r2=%.2f", tr)
+  label3<- sprintf("Cursor Jump, r2=%.2f", er)
+  legend(
+    -50,
+    40,
+    legend = c(
+      label1,
+      label2,
+      label3
+    ),
+    col = c("dodgerblue4", "sienna2", 'mediumseagreen'),
+    lty = c(1, 1, 1),
+    lwd = c(2, 2, 2),
+    bty = 'n'
+  )
+  
+  
+}
 
 
-
-RegressionPLot <- function() {
+RegressionPLotEC <- function() {
 
   ##Get no-cursor data
-  cdnc<- read.csv('ana/condition 1 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  cdncleaned<- Cleandata('ana/condition 1 trialtype 0_cuttoff0.7.csv')
-  cdnc<-data.frame(cdnc$rot[17:160],cdncleaned)
-  td<- read.csv('ana/condition 3 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  td1<- Cleandata('ana/condition 3 trialtype 0_cuttoff0.7.csv')
-  tdnc<-data.frame(td$rot[17:160],td1)
-  rm(td1)
-  jd<- read.csv('ana/condition 4 trialtype 0_cuttoff0.7.csv', header = TRUE)
-  jd1<- Cleandata('ana/condition 4 trialtype 0_cuttoff0.7.csv')
-  jdnc<-data.frame(jd$rot[17:160],jd1)
-  jdnc<- jdnc[,-c(6,8,13)]
-  rm(jd1)
+  cdnc<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
+  tdnc<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
+  jdnc<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
+  
   
   cdRM<-ANOVAcombine(cdnc)
   Contnc<-cdRM$Reaches[cdRM$Time == "EC"]
@@ -330,19 +372,9 @@ RegressionPLot <- function() {
   
   ##get reach data
   
-  cd<- read.csv('ana/condition 1 trialtype 1_cuttoff0.7.csv', header = TRUE)
-  cd1<- Cleandata('ana/condition 1 trialtype 1_cuttoff0.7.csv')
-  cd<-data.frame(cd$rot[17:160],cd1)
-  rm(cd1)
-  td<- read.csv('ana/condition 3 trialtype 1_cuttoff0.7.csv', header = TRUE)
-  td1<- Cleandata('ana/condition 3 trialtype 1_cuttoff0.7.csv')
-  td<-data.frame(td$rot[17:160],td1)
-  rm(td1)
-  jd<- read.csv('ana/condition 4 trialtype 1_cuttoff0.7.csv', header = TRUE)
-  jd1<- Cleandata('ana/condition 4 trialtype 1_cuttoff0.7.csv')
-  jd<-data.frame(jd$rot[17:160],jd1)
-  jd<- jd[,-c(6,8,13)]
-  rm(jd1)
+  cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
+  td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
+  jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
   
   cdRMR<-ANOVAcombine(cd)
   ContR<-cdRMR$Reaches[cdRMR$Time == "EC"]
@@ -356,7 +388,7 @@ RegressionPLot <- function() {
   
   
   plot(
-    ContR ~ Contnc,
+    Contnc ~ ContR,
     col = "dodgerblue4",
     xlab = 'No-Cursors',
     ylab = 'Reaches',
@@ -378,13 +410,13 @@ RegressionPLot <- function() {
   print(summary(lm)$coefficients[2,4])
 
   
-  points(JumpR ~ Jumpnc, col = "mediumseagreen" )
+  points(Jumpnc ~ JumpR, col = "mediumseagreen" )
   em<-plotRegressionWithCI(JumpR, Jumpnc, colors = c(rgb(0.23, 0.70, .44, 0.2), "mediumseagreen"))
   er<-summary(em)$r.squared
   print(summary(em)$coefficients[2,4])
   
   
-  points(TermR ~ Termnc, col = "Sienna2")
+  points(Termnc ~ TermR, col = "Sienna2")
   tm<-plotRegressionWithCI(TermR, Termnc, colors = c(rgb(0.93, 0.47, .26, 0.2), "sienna2"))
   tr<-summary(tm)$r.squared
   print(summary(tm)$coefficients[2,4])
@@ -410,6 +442,7 @@ RegressionPLot <- function() {
   
   
 }
+
 
 
 
