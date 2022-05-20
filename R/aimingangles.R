@@ -48,15 +48,29 @@ write.csv(finalaiming, output, quote = FALSE, row.names = FALSE)
 
 }
  
+getmedianaims<- function() {
+df<-read.csv("AimingAngle/aims.csv", header = TRUE)
+
+df[,1:4]<- abs(df[,1:4])
 
 
- 
-
- 
- 
- 
- 
+medianaims<-apply(df[,1:4],MARGIN = 1, FUN = median)
 
 
- 
- 
+aims<- data.frame(medianaims, df$experiment)
+write.csv(aims, "AimingAngle/Participant Median Aims.csv", quote = FALSE, row.names = FALSE)
+}
+
+aimingANOVA<- function(){
+data <- read.csv("AimingAngle/Participant Median Aims.csv", header=TRUE,
+                 col_types = cols(experiment = col_factor(levels = c("continuous", 
+                 "terminal", "cursorjump"))))
+data$Participant<- as.factor(data$Participant)
+fullmodel <- ezANOVA(data=data,
+                     dv=medianaims,
+                     wid=Participant,
+                     between = experiment,
+                     type=3,
+                     return_aov=TRUE)
+}
+
