@@ -9,6 +9,7 @@ source('~/Desktop/grad/ImplicitProcesses/implicitprocesses/preprocessing.R')
 newdata <- getpinfo()
 newdata1 <- getpangles(cond = 0)#this is now you combine data for each condition and trialtype
 combinetrials() #this is how you combine data for all cond and types at once
+calculateaimingangles() # this pulls out the aiming angles of each group and makes a csv file of them. 
 ```
 ```{r code for making figures}
 svglite(file='Training Trials Across Conditions with Means.svg', width=5, height=15, system_fonts=list(sans = "Arial"))
