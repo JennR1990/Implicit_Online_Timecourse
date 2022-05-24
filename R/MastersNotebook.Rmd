@@ -64,14 +64,15 @@ summary(ncmodel)
 
 ```{r plots for CVR poster 2022}
 
-svglite(file="figs/Poster Figures.svg", width=12, height=12, system_fonts=list(sans = "Arial"))
-layout(matrix(1:6, nrow = 3, byrow = TRUE))
+svglite(file="figs/Poster Figures.svg", width=12, height=16, system_fonts=list(sans = "Arial"))
+layout(matrix(1:8, nrow = 4, byrow = TRUE))
 plotreachestogether()
 plotnocursorstogether()
 PlotzoomedINreaches()
 PlotzoomedINNocursors()
 RegressionPLotEL()
 RegressionPLotEC()
+plotaimingangles()
 dev.off()
 
 ```
