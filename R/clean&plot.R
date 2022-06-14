@@ -39,13 +39,13 @@ plotdata <- function(filename, cond, task, fun){
 
 plotindividualcurves<- function() {
   
-  filenames<- c("ana/condition 1 trialtype 1_cuttoff0.3.csv","ana/condition 3 trialtype 1_cuttoff0.3.csv","ana/condition 4 trialtype 1_cuttoff0.3.csv","ana/condition 1 trialtype 1_cuttoff0.7.csv","ana/condition 3 trialtype 1_cuttoff0.7.csv","ana/condition 4 trialtype 1_cuttoff0.7.csv","ana/condition 1 trialtype 0_cuttoff0.7.csv","ana/condition 3 trialtype 0_cuttoff0.7.csv","ana/condition 4 trialtype 0_cuttoff0.7.csv")
-  names<- c("Continuous (.3)", "Terminal (.3)", "Cursor-Jump (.3)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)")
-  task<- c("reaches","reaches","reaches","reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
+  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  names<- c("Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)")
+  task<- c("reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
   
   for (i in 1:length(filenames)) {
     
-    outputname<- sprintf("figs/%s %s_individual_curves.jpeg", names[i], task[i])
+    outputname<- sprintf("figs/%s %s_Summer_individual_curves_updated.jpeg", names[i], task[i])
     jpeg(outputname, width = 15, height = 15, units = "in", res = 100)
     filename<- filenames[i]
     #data<-Cleandata(filename)
@@ -53,13 +53,14 @@ plotindividualcurves<- function() {
     
     
     if ( i %% 3 == 0){
-    layout(matrix(c(1:(ncol(data))), nrow=(ncol(data))/3, byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
+    layout(matrix(c(1:(ncol(data))), nrow=(ceiling(ncol(data))/3), byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
     } else {
-    layout(matrix(c(1:(ncol(data)-1)), nrow=(ncol(data))/3, byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
+    layout(matrix(c(1:(ncol(data))), nrow=(ceiling(ncol(data))/3), byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
+    #layout(matrix(c(1:(ncol(data)-1)), nrow=(ceiling(ncol(data))/3), byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
     }  
     for (k in 2:ncol(data)){
-    plot(data[17:160,k], type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
-    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
+    plot(data[17:160,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
+    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
     lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
     # legend(
     #   5,
@@ -199,22 +200,21 @@ plotblockscleaned<- function() {
 
 plotcleandataseparately<- function() {
   
-  filenames<- c("ana/condition 1 trialtype 1_cuttoff0.3.csv","ana/condition 3 trialtype 1_cuttoff0.3.csv","ana/condition 4 trialtype 1_cuttoff0.3.csv","ana/condition 1 trialtype 1_cuttoff0.7.csv","ana/condition 3 trialtype 1_cuttoff0.7.csv","ana/condition 4 trialtype 1_cuttoff0.7.csv","ana/condition 1 trialtype 0_cuttoff0.7.csv","ana/condition 3 trialtype 0_cuttoff0.7.csv","ana/condition 4 trialtype 0_cuttoff0.7.csv")
-  names<- c("Continuous (.3)", "Terminal (.3)", "Cursor-Jump (.3)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)")
-  task<- c("reaches","reaches","reaches","reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
-  
+  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  names<- c("Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)")
+  task<- c("reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
   for (i in 1:length(filenames)) {
     
-    outputname<- sprintf("figs/%s %s.jpeg", names[i], task[i])
+    outputname<- sprintf("figs/%s %s Summer.jpeg", names[i], task[i])
     jpeg(outputname)
     filename<- filenames[i]
     data<-Cleandata(filename)
     
-    plot(apply(data, 1, median, na.rm=T), type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-45,45), col = "Blue", axes = FALSE, cex.lab = 1.25)
-    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
+    plot(apply(data, 1, median, na.rm=T)*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-45,45), col = "Blue", axes = FALSE, cex.lab = 1.25)
+    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
     lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
     dataCIs <- trialCI(data = data)
-    dataCIs <- dataCIs
+    dataCIs <- dataCIs*-1
     x <-  c(c(1:144), rev(c(1:144)))
     y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
     polygon(x, y, col = rgb(0, 0, .5, 0.2), border = NA)
@@ -222,7 +222,7 @@ plotcleandataseparately<- function() {
     
     legend(
       5,
-      40,
+      -40,
       legend = task[i],
       col = "Blue",
       lty = c(1),
@@ -330,3 +330,18 @@ t.interval = function(data, variance = var(data, na.rm = TRUE), conf.level = 0.9
   
 }
 
+
+
+
+
+
+for (k in 2:ncol(data)){
+  plot(as.numeric(unlist(data[17:160,k])), type = 'l', xlab = "Trials", ylab = "Deviations", main = "continuous reaches", ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
+  lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
+  lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+
+  axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+       las = 2)
+  axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+  
+}

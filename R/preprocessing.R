@@ -1,5 +1,5 @@
 getpinfo <- function() {
-setwd("/Jenn/Documents/Implicit_Online_Timecourse/data")
+setwd("/Jenn/Documents/Implicit_Online_Timecourse/summerdata")
 files <- list.files(pattern = "csv")
 participants <- c()
 conditions <- c()
@@ -12,7 +12,7 @@ participants[file] <- unique(df$participant)
 conditions[file] <- unique(df$condition)
 dates[file] <- unique(df$date)
 }
-write.csv(data.frame(participants,conditions,dates,files), file = "../ana/Participant Info.csv", quote = FALSE, row.names = FALSE)
+write.csv(data.frame(participants,conditions,dates,files), file = "../ana/Summer Participant Info.csv", quote = FALSE, row.names = FALSE)
 return(data.frame(participants,conditions,dates,files))
 }
 
@@ -35,7 +35,7 @@ if (cond == 0) {
 rd <- data.frame(matrix(NA,nrow(DF)/2,length(filenames)))
 }
 rot <- c()
-setwd("/Jenn/Documents/Implicit_Online_Timecourse/data")
+setwd("/Jenn/Documents/Implicit_Online_Timecourse/summerdata")
 for (file in 1:length(filenames)) {
   filename <- filenames[file]
   #pnum <- pnums[1]
@@ -48,7 +48,7 @@ for (num in 1:length(filenames)) {
   newnames[num] <- sprintf("p%d",num)
 
 }
-setwd("/Jenn/Documents/Implicit_Online_Timecourse/ana")
+setwd("/Jenn/Documents/Implicit_Online_Timecourse/summerana")
 colnames(rd) <- newnames
 rd <- cbind(rot,rd)
 rd <- data.frame(rd)
@@ -315,13 +315,13 @@ rotateTrajectory <- function(X,Y,angle) {
 
 
 combinetrials <- function() {
-for (i in c(1,3,4)){
-  newdata <- getpangles(cond = i,type = 1, cutoff = 0.3)
-}
+# for (i in c(1,3,4)){
+#   newdata <- getpangles(cond = i,type = 1, cutoff = 0.3)
+# }
 
-#for (i in c(1,3,4)){
-#  newdata <- getpangles(cond = i,type = 0, cutoff = 0.7)
-#}
+for (i in c(1,3,4)){
+  newdata <- getpangles(cond = i,type = 1, cutoff = 0.7)
+}
   return(print("done"))
 }
 
