@@ -205,7 +205,7 @@ plotcleandataseparately<- function() {
   task<- c("reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
   for (i in 1:length(filenames)) {
     
-    outputname<- sprintf("figs/%s %s Summer.jpeg", names[i], task[i])
+    outputname<- sprintf("figs/%s %s Summer_forwardTarget.jpeg", names[i], task[i])
     jpeg(outputname)
     filename<- filenames[i]
     data<-Cleandata(filename)

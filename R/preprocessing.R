@@ -320,7 +320,7 @@ combinetrials <- function() {
 # }
 
 for (i in c(1,3,4)){
-  newdata <- getpangles(cond = i,type = 1, cutoff = 0.7)
+  newdata <- getpangles(cond = i,type = 0, cutoff = 0.7)
 }
   return(print("done"))
 }
