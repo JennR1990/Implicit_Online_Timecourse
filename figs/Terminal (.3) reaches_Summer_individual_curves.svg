@@ -205,4 +205,8 @@
 <line x1='328.89' y1='1031.53' x2='328.89' y2='1036.28' style='stroke-width: 0.75;' />
 <text transform='translate(53.66,1041.03) rotate(-90)' text-anchor='end' style='font-size: 9.90px; font-family: "Arial";' textLength='5.50px' lengthAdjust='spacingAndGlyphs'>1</text>
 <text transform='translate(90.70,1041.03) rotate(-90)' text-anchor='end' style='font-size: 9.90px; font-family: "Arial";' textLength='11.00px' lengthAdjust='spacingAndGlyphs'>20</text>
-<text transform='translate(285.65,1041.03) rotate(-90)'
+<text transform='translate(285.65,1041.03) rotate(-90)' text-anchor='end' style='font-size: 9.90px; font-family: "Arial";' textLength='16.50px' lengthAdjust='spacingAndGlyphs'>120</text>
+<text transform='translate(301.24,1041.03) rotate(-90)' text-anchor='end' style='font-size: 9.90px; font-family: "Arial";' textLength='16.50px' lengthAdjust='spacingAndGlyphs'>128</text>
+<text transform='translate(332.43,1041.03) rotate(-90)' text-anchor='end' style='font-size: 9.90px; font-family: "Arial";' textLength='16.50px' lengthAdjust='spacingAndGlyphs'>144</text>
+</g>
+</svg>
