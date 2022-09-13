@@ -39,29 +39,27 @@ plotdata <- function(filename, cond, task, fun){
 
 plotindividualcurves<- function() {
   
-  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
-  names<- c("Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)","Continuous (.7)", "Terminal (.7)", "Cursor-Jump (.7)")
+  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.3.csv","summerana/condition 3 trialtype 1_cuttoff0.3.csv","summerana/condition 4 trialtype 1_cuttoff0.3.csv","summerana/condition 1 trialtype 0_cuttoff0.3.csv","summerana/condition 3 trialtype 0_cuttoff0.3.csv","summerana/condition 4 trialtype 0_cuttoff0.3.csv")
+  names<- c("Continuous (.3)", "Terminal (.3)", "Cursor-Jump (.3)","Continuous (.3)", "Terminal (.3)", "Cursor-Jump (.3)")
   task<- c("reaches","reaches","reaches","No-Cursors","No-Cursors","No-Cursors")
   
   for (i in 1:length(filenames)) {
     
-    outputname<- sprintf("figs/%s %s_Summer_individual_curves_updated.jpeg", names[i], task[i])
-    jpeg(outputname, width = 15, height = 15, units = "in", res = 100)
+    outputname<- sprintf("figs/%s %s_Forward_individual_curves_cuttoff3.svg", names[i], task[i])
+    svg(outputname, width = 3, height = 60)
     filename<- filenames[i]
-    #data<-Cleandata(filename)
     data<-read.csv(filename, header = TRUE)
+    data<- data[,-1]
+
+    layout(matrix(1:ncol(data), nrow=ncol(data), byrow=TRUE))
+    
+
     
     
-    if ( i %% 3 == 0){
-    layout(matrix(c(1:(ncol(data))), nrow=(ceiling(ncol(data))/3), byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
-    } else {
-    layout(matrix(c(1:(ncol(data))), nrow=(ceiling(ncol(data))/3), byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
-    #layout(matrix(c(1:(ncol(data)-1)), nrow=(ceiling(ncol(data))/3), byrow=TRUE), heights=c(rep(2,times = (ncol(data))/3)))
-    }  
-    for (k in 2:ncol(data)){
-    plot(data[17:160,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
-    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
-    lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+    for (k in 1:ncol(data)){
+    plot(data[17:136,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
+    lines(c(1, 20, 20, 120, 120), c(0, 0, 45, 45, 45), col = rgb(0., 0., 0.))
+    #lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
     # legend(
     #   5,
     #   40,
@@ -74,7 +72,7 @@ plotindividualcurves<- function() {
     # )
     axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
          las = 2)
-    axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+    axis(1, at = c(1, 20, 120), cex.axis = 1.25, las = 2)
 
     }
     dev.off()    
@@ -240,58 +238,57 @@ plotcleandataseparately<- function() {
 
 plotcleandatatogether<- function() {
   
-  filenames<- c("ana/condition 1 trialtype 1_cuttoff0.3.csv","ana/condition 1 trialtype 1_cuttoff0.7.csv","ana/condition 1 trialtype 0_cuttoff0.7.csv","ana/condition 3 trialtype 1_cuttoff0.3.csv","ana/condition 3 trialtype 1_cuttoff0.7.csv","ana/condition 3 trialtype 0_cuttoff0.7.csv","ana/condition 4 trialtype 1_cuttoff0.3.csv","ana/condition 4 trialtype 1_cuttoff0.7.csv","ana/condition 4 trialtype 0_cuttoff0.7.csv")
-  names<- c("Continuous" ,"Continuous" ,"Continuous" , "Terminal","Terminal","Terminal", "Cursor-Jump")
+  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  names<- c("Continuous" ,"Continuous" ,"Terminal","Terminal", "Cursor-Jump", "Cursor-Jump")
   
-  points<- c(1,4,7)
-  for (i in points) {
+
     
-    outputname<- sprintf("figs/%s_mean.jpeg", names[i])
+    outputname<- "figs/Forward_No-Cursors.jpeg"
     jpeg(outputname)
-    filename<- filenames[i]
+    filename<- filenames[2]
     data<-Cleandata(filename)
     
-    plot(apply(data, 1, mean, na.rm=T), type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-45,45), col = "Cyan", axes = FALSE, cex.lab = 1.25)
+    plot((apply(data, 1, mean, na.rm=T))*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = "No-Cursors", ylim = c(-45,45), col = "dodgerblue", axes = FALSE, cex.lab = 1.25)
     
     dataCIs <- trialCI(data = data)
-    dataCIs <- dataCIs
+    dataCIs <- dataCIs*-1
     x <-  c(c(1:144), rev(c(1:144)))
     y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
-    polygon(x, y, col = rgb(0, 1, 1, 0.2), border = NA)
+    polygon(x, y, col = rgb(.11, .56, .99, 0.2), border = NA)
     
     
     
     
-    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
+    lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
     lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
-    filename<- filenames[i+1]
+    filename<- filenames[4]
     data<-Cleandata(filename)
-    lines(apply(data, 1, median, na.rm=T), type = "l", col = "Dark Blue", lty = 2 )
+    lines((apply(data, 1, median, na.rm=T))*-1, type = "l", col = "sienna2" )
     
     dataCIs <- trialCI(data = data)
-    dataCIs <- dataCIs
+    dataCIs <- dataCIs*-1
     x <-  c(c(1:144), rev(c(1:144)))
     y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
-    polygon(x, y, col = rgb(0, 0, .5, 0.2), border = NA)
+    polygon(x, y, col = rgb(.93, .47, .28, 0.2), border = NA)
     
     
-    filename<- filenames[i+2]
+    filename<- filenames[6]
     data<-Cleandata(filename)
-    lines(apply(data, 1, median, na.rm=T), type = "l", col = "red")
+    lines((apply(data, 1, median, na.rm=T))*-1, type = "l", col = "mediumseagreen")
     
     dataCIs <- trialCI(data = data)
-    dataCIs <- dataCIs
+    dataCIs <- dataCIs*-1
     x <-  c(c(1:144), rev(c(1:144)))
     y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
-    polygon(x, y, col = rgb(1, 0, 0, 0.2), border = NA)
+    polygon(x, y, col = rgb(.23, .69, 0.44, 0.2), border = NA)
     
     legend(
-      5,
-      40,
-      legend = c("Reaches (.3)", "Reaches (.7)", "No-Cursor (.7)"),
-      col = c("cyan", "Dark Blue", "Red"),
-      lty = c(1,2,1),
-      lwd = c(2,2,2),
+      30,
+      -5,
+      legend = c("Continuous", "Terminal", "Cursor-Jump"),
+      col = c( "dodgerblue", "sienna2", "mediumseagreen"),
+      lty = c(1),
+      lwd = c(2,2),
       bty = 'n',
       cex = 1.25
     )
@@ -299,7 +296,7 @@ plotcleandatatogether<- function() {
          las = 2)
     axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
     dev.off()
-  }
+  
 }
 
 
@@ -332,16 +329,88 @@ t.interval = function(data, variance = var(data, na.rm = TRUE), conf.level = 0.9
 
 
 
+# 
+# 
+# 
+# for (k in 2:ncol(data)){
+#   plot(as.numeric(unlist(data[17:160,k])), type = 'l', xlab = "Trials", ylab = "Deviations", main = "continuous reaches", ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
+#   lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
+#   lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+# 
+#   axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+#        las = 2)
+#   axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+#   
+# }
 
 
 
-for (k in 2:ncol(data)){
-  plot(as.numeric(unlist(data[17:160,k])), type = 'l', xlab = "Trials", ylab = "Deviations", main = "continuous reaches", ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
-  lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, -45, -45, 45, 45, 0), col = rgb(0., 0., 0.))
-  lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
 
-  axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
-       las = 2)
-  axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+
+plotlearningasymptotes<- function() {
+
+  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  
+  df<- read.csv(filenames[2])
+  newdf<-df[113:136,2:ncol(df)]
+  contmedians<-apply(newdf, 2, median, na.rm=TRUE)
+  
+  df<- read.csv(filenames[4])
+  newdf<-df[113:136,2:ncol(df)]
+  termmedians<-apply(newdf, 2, median, na.rm=TRUE)
+  
+  
+  df<- read.csv(filenames[6])
+  newdf<-df[113:136,2:ncol(df)]
+  Jumpmedians<-apply(newdf, 2, median, na.rm=TRUE)
+  
+  
+  plot(100,100,xlim = c(.75,2.25), ylim = c(0,55), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "Median No-Cursor in last 24 trials", cex = 1.25, cex.lab = 1.25)
+  axis(1, at=c(1,1.5,2), labels = c("continuous", 'terminal', 'cursorjump'), cex.axis = 1.25)
+  axis(2, at = c(0,10,20,30,40,50), las = 2, cex.axis = 1.25)
+  points(x = rep(1, times = length(contmedians)),y=contmedians*-1, col = "dodgerblue")
+  points(x = rep(1.5, times = length(termmedians)),y=termmedians*-1, col = "sienna2")
+  points(x = rep(2, times = length(Jumpmedians)),y=Jumpmedians*-1, col = "mediumseagreen")
+  abline(h=45, lty= 3, col= "grey")
+  abline(h=0, lty= 3, col= "grey")
+  
+  lines(x = c(.95,1.05),y=c(mean(contmedians*-1, na.rm=TRUE),mean(contmedians*-1, na.rm=TRUE)), col = "dodgerblue")
+  lower<-t.interval(contmedians*-1)[1]
+  upper<-t.interval(contmedians*-1)[2]
+  x<- c(.95,1.05,1.05,.95)
+  y<- c(lower,lower,upper,upper)
+  polygon(x,y,col = rgb(0.04, 0.3, .5, 0.2), border = NA)
+  d<- density(contmedians*-1, n=24,from = min(contmedians*-1), to = max(contmedians*-1), bw = 1)$y
+  dX <- (d / sum(d)) 
+  dY <- seq(min(contmedians*-1),max(contmedians*-1),length.out = 24)
+  polygon(x=c(0,dX,0)+1.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.04, 0.3, .5, 0.2))
+  
+  
+  lines(x = c(1.45,1.55),y=c(mean(termmedians*-1),mean(termmedians*-1)), col = "sienna2")
+  lower<-t.interval(termmedians*-1)[1]
+  upper<-t.interval(termmedians*-1)[2]
+  x<- c(1.45,1.55,1.55,1.45)
+  y<- c(lower,lower,upper,upper)
+  polygon(x,y,col = rgb(0.93, 0.47, .26, 0.2), border = NA)
+  d<- density(termmedians*-1, n=length(termmedians),from = min(termmedians*-1), to = max(termmedians*-1), bw = 1)$y
+  dX <- (d / sum(d)) 
+  dY <- seq(min(termmedians*-1),max(termmedians*-1),length.out = length(termmedians*-1))
+  polygon(x=c(0,dX,0)+1.57, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.93, 0.47, .26, 0.2))
+  
+  
+  lines(x = c(1.95,2.05),y=c(mean(Jumpmedians*-1),mean(Jumpmedians*-1)), col = "mediumseagreen")
+  lower<-t.interval(Jumpmedians*-1)[1]
+  upper<-t.interval(Jumpmedians*-1)[2]
+  x<- c(1.95,2.05,2.05,1.95)
+  y<- c(lower,lower,upper,upper)
+  polygon(x,y,col = rgb(0.23, 0.70, .44, 0.2), border = NA)
+  d<- density(Jumpmedians*-1, n=length(Jumpmedians*-1),from = min(Jumpmedians*-1), to = max(Jumpmedians*-1), bw = 1)$y
+  dX <- (d / sum(d)) 
+  dY <- seq(min(Jumpmedians*-1),max(Jumpmedians*-1),length.out = length(Jumpmedians*-1))
+  polygon(x=c(0,dX,0)+2.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.23, 0.70, .44, 0.2))
+  
+  
   
 }
+
+
