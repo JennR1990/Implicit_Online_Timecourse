@@ -46,9 +46,10 @@ plotindividualcurves<- function() {
   for (i in 1:length(filenames)) {
     
     outputname<- sprintf("figs/%s %s_Forward_individual_curves_cuttoff3.svg", names[i], task[i])
-    svg(outputname, width = 3, height = 60)
+    svg(outputname, width = 4, height = 80)
     filename<- filenames[i]
     data<-read.csv(filename, header = TRUE)
+    data1<- Cleandata(filename)
     data<- data[,-1]
 
     layout(matrix(1:ncol(data), nrow=ncol(data), byrow=TRUE))
@@ -57,8 +58,9 @@ plotindividualcurves<- function() {
     
     
     for (k in 1:ncol(data)){
-    plot(data[17:136,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = names[i], ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
-    lines(c(1, 20, 20, 120, 120), c(0, 0, 45, 45, 45), col = rgb(0., 0., 0.))
+    plot(data[17:136,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = as.character(k), ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
+    lines(data1[1:120,k]*-1, type = 'l', col = "red")
+      lines(c(1, 20, 20, 120, 120), c(0, 0, 45, 45, 45), col = rgb(0., 0., 0.))
     #lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
     # legend(
     #   5,
@@ -70,7 +72,7 @@ plotindividualcurves<- function() {
     #   bty = 'n',
     #   cex = 1.25
     # )
-    axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+    axis(2, at = c(-45, -35,-25,-15,-5, 0,5,15, 25,35, 45), cex.axis = 1.25,
          las = 2)
     axis(1, at = c(1, 20, 120), cex.axis = 1.25, las = 2)
 
