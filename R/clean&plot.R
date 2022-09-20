@@ -55,12 +55,19 @@ plotindividualcurves<- function() {
     layout(matrix(1:ncol(data), nrow=ncol(data), byrow=TRUE))
     
 
-    
+    TR<- c()
     
     for (k in 1:ncol(data)){
-    plot(data[17:136,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = as.character(k), ylim = c(-60,60), col = "Blue", axes = FALSE, cex.lab = 1.25)
-    lines(data1[1:120,k]*-1, type = 'l', col = "red")
+    plot(data[17:136,k]*-1, type = 'l', xlab = "Trials", ylab = "Deviations", main = as.character(k), ylim = c(-60,60), col = "red", axes = FALSE, cex.lab = 1.25)
+      sum(is.na(data[17:136,k]))
+      Removed<-sum(is.na(data1[1:120,k]))
+       lines(data1[1:120,k]*-1, type = 'l', col = "blue")
       lines(c(1, 20, 20, 120, 120), c(0, 0, 45, 45, 45), col = rgb(0., 0., 0.))
+      text(x=105, y = -10, labels = sprintf("trials removed %s", Removed))
+      
+    TR<- c(TR,Removed)
+      
+      
     #lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
     # legend(
     #   5,
@@ -77,10 +84,20 @@ plotindividualcurves<- function() {
     axis(1, at = c(1, 20, 120), cex.axis = 1.25, las = 2)
 
     }
+    outputname<- sprintf("figs/%s %s_Forward_individual_curves_trials_removed.csv", names[i], task[i])
+    write.csv(TR, file = outputname, quote = FALSE, row.names = FALSE )
     dev.off()    
-    
   }
   
+  
+}
+
+plottrialsremoveddensity<- function() {
+  TR<-read.csv(file = 'figs/All Trials Removed.csv', header = TRUE)
+  svg("figs/All TRials Removed Density.svg", width = 4, height = 4)
+  d<- density(TR$Trials.Removed, bw = 1)
+  plot(d, main = "reaches", xlab = "Trials Removed")
+  dev.off()
   
 }
 
