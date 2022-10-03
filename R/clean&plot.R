@@ -257,7 +257,9 @@ plotcleandataseparately<- function() {
 
 plotcleandatatogether<- function() {
   
-  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv"
+                ,"summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv"
+                ,"summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
   names<- c("Continuous" ,"Continuous" ,"Terminal","Terminal", "Cursor-Jump", "Cursor-Jump")
   
 

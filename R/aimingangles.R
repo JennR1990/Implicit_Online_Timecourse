@@ -3,7 +3,7 @@
 calculateaimingangles<- function() {
 source('R/preprocessing.R')
 pinfo<-getpinfo()
-setwd("E:/Jenn/Documents/Implicit_Online_Timecourse/summerdata")
+#setwd("E:/Jenn/Documents/Implicit_Online_Timecourse/summerdata")
 
  groups<- unique(pinfo$conditions)
  for (group in groups){
@@ -73,22 +73,22 @@ write.csv(finalaiming, output, quote = FALSE, row.names = FALSE)
 
 
 getmedianaims<- function() {
-df<-read.csv("AimingAngle/Forward_Aims.csv", header = TRUE)
+df<-read.csv("AimingAngle/Forward_Fall_Aims.csv", header = TRUE)
 
-df[,1:4]<- abs(df[,1:4])
-
-
-medianaims<-apply(df[,1:4],MARGIN = 1, FUN = median, na.rm = TRUE)
+df[,1:8]<- abs(df[,1:8])
 
 
-aims<- data.frame(medianaims, df$Experiment)
-write.csv(aims, "AimingAngle/Forward_Participant_Median_Aims.csv", quote = FALSE, row.names = FALSE)
+medianaims<-apply(df[,1:8],MARGIN = 1, FUN = median, na.rm = TRUE)
+
+
+aims<- data.frame(medianaims, df$Experiment, df$Participant)
+write.csv(aims, "AimingAngle/Forward_Fall_Participant_Median_Aims.csv", quote = FALSE, row.names = FALSE)
 return(aims)
 }
 
 aimingAnalysis<- function(){
-data <- read.csv("AimingAngle/Forward_Participant_Median_Aims_analysis.csv", header=TRUE)
-data$Participant<- as.factor(data$Participant)
+data <- read.csv("AimingAngle/Forward_Fall_Participant_Median_Aims.csv", header=TRUE)
+data$Participant<- as.factor(data$df.Participant)
 data$df.Experiment<- as.factor(data$df.Experiment)
 fullmodel <- ezANOVA(data=data,
                      dv=medianaims,
@@ -108,7 +108,7 @@ t.test(data$medianaims[data$df.Experiment == 'Cursor-Jump'],data$medianaims[data
 
 
 plotaimingangles<- function() {
-  medianaims<- read.csv('AimingAngle/Forward_Participant_Median_Aims-simplified.csv', header = TRUE)
+  medianaims<- read.csv('AimingAngle/Forward_Fall_Participant_Median_Aims.csv', header = TRUE)
 ca<- medianaims[medianaims$df.Experiment == "Continuous",]
 ta<- medianaims[medianaims$df.Experiment == "Terminal",]
 ja<- medianaims[medianaims$df.Experiment == "Cursor-Jump",]

@@ -60,6 +60,10 @@ summary(ncmodel)
 
 
 
+```{r SCAPPS figures}
+plotaimingangles()
+
+
 
 
 ```{r plots for CVR poster 2022}

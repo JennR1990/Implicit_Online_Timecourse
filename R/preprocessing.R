@@ -1,5 +1,5 @@
 getpinfo <- function() {
-setwd("/Jenn/Documents/Implicit_Online_Timecourse/summerdata")
+setwd('summerdata/')
 files <- list.files(pattern = "csv")
 participants <- c()
 conditions <- c()
@@ -12,7 +12,7 @@ participants[file] <- unique(df$participant)
 conditions[file] <- unique(df$condition)
 dates[file] <- unique(df$date)
 }
-write.csv(data.frame(participants,conditions,dates,files), file = "../ana/Summer Participant Info.csv", quote = FALSE, row.names = FALSE)
+write.csv(data.frame(participants,conditions,dates,files), file = "../forwardana/Summer Participant Info.csv", quote = FALSE, row.names = FALSE)
 return(data.frame(participants,conditions,dates,files))
 }
 
@@ -24,22 +24,23 @@ return(data.frame(participants,conditions,dates,files))
 #start looking at individual data
 #find a way to look at it per target
 getpangles <- function(cond = 1,type = 1, cutoff = 0.3) {
-  newdata <- getpinfo()
+ # newdata <- getpinfo()
 filenames <- newdata$files[newdata$conditions == cond]
 DF <- handleOneFile(filenames[1])
 #pnums <- newdata$participants[newdata$conditions == 1]
 
 if (cond == 0) {
-  rd <- data.frame(matrix(NA,nrow(DF),length(filenames)))
+  rd <- data.frame(matrix(NA,136,length(filenames)))
 } else {
-rd <- data.frame(matrix(NA,nrow(DF)/2,length(filenames)))
+rd <- data.frame(matrix(NA,136,length(filenames)))
 }
 rot <- c()
-setwd("/Jenn/Documents/Implicit_Online_Timecourse/summerdata")
+setwd("summerdata/")
 for (file in 1:length(filenames)) {
   filename <- filenames[file]
   #pnum <- pnums[1]
   df <- handleOneFile(filename, cutoff)
+  df<- df[1:272,]
   rd[ ,file] <- df$reachdeviation_deg[df$trialtype == type]
   rot <- df$phase[df$trialtype == type]
 }
@@ -48,7 +49,7 @@ for (num in 1:length(filenames)) {
   newnames[num] <- sprintf("p%d",num)
 
 }
-setwd("/Jenn/Documents/Implicit_Online_Timecourse/summerana")
+#setwd("../forwardana/")
 colnames(rd) <- newnames
 rd <- cbind(rot,rd)
 rd <- data.frame(rd)
@@ -79,7 +80,7 @@ rd[is.na(rd)]<- 110
 #}
 
 rd[rd == 110] <- NA
-outputname <- sprintf("condition %d trialtype %d_cuttoff%.1f.csv",cond,type, cutoff)
+outputname <- sprintf("../forwardana/condition %d trialtype %d_cuttoff%.1f.csv",cond,type, cutoff)
 write.csv(rd,file=outputname,row.names = F,quote = F)
 return(rd)
 
