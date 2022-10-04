@@ -136,9 +136,9 @@ asymptoticDecaySettings <- function() {
   
   # this list determines which signals get done for each group
   groupsignals <- list(
-     'continuous'       = c('nocursors', 'slowprocess', 'reaches'),
-    'terminal'        = c('nocursors', 'slowprocess', 'reaches'),
-    'cursorjump'        = c('nocursors', 'slowprocess', 'reaches')
+     'continuous'       = c('nocursors',  'reaches'),
+    'terminal'        = c('nocursors', 'reaches'),
+    'cursorjump'        = c('nocursors', 'reaches')
   )
   # this list determines which signals get done for each group
 
@@ -146,18 +146,18 @@ asymptoticDecaySettings <- function() {
 
   
   # we used to run it on the reversal phase too, but it takes so much time...
-  trialsets <- list('main'=c(1:100), 'reversal'=c(101:108))
+  trialsets <- list('main'=c(1:100))
 
   baselines <- list(
-    'continuous'       = list( 'nocursors'=20, 'slowprocess'=20, 'reaches'=20 ),
-    'terminal'        = c('nocursors'=20,      'slowprocess'=20,    'reaches'=20),
-    'cursorjump'        = c('nocursors'=20,      'slowprocess'=20,    'reaches'=20)
+    'continuous'       = list( 'nocursors'=36,  'reaches'=36 ),
+    'terminal'        = c('nocursors'=36,          'reaches'=36),
+    'cursorjump'        = c('nocursors'=36,       'reaches'=36)
   )
   
   schedules <- list( 
-    'continuous'       = list( 'nocursors'=  -1, 'slowprocess'=  -1, 'reaches'= -1 ),
-    'terminal'        = c('nocursors'=-1,      'slowprocess'=-1,    'reaches'=-1),
-    'cursorjump'        = c('nocursors'=-1,      'slowprocess'=-1,    'reaches'=-1)
+    'continuous'       = list( 'nocursors'=  -1, 'reaches'= -1 ),
+    'terminal'        = c('nocursors'=-1,        'reaches'=-1),
+    'cursorjump'        = c('nocursors'=-1,       'reaches'=-1)
   )
   
   optimxInstalled <- require("optimx")
@@ -195,13 +195,13 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
     
     participants <- sprintf('p%d',c(1:32))
     if (group == 'continuous') {
-      participants <- sprintf('p%d',c(1:15))
+      participants <- sprintf('p%d',c(1:34))
     }
     if (group == 'terminal') {
-      participants <- sprintf('p%d',c(2:15))
+      participants <- sprintf('p%d',c(1:33))
     }
     if (group == 'cursorjump') {
-      participants <- sprintf('p%d',c(1:15))
+      participants <- sprintf('p%d',c(1:33))
     }
 
     
@@ -222,7 +222,7 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
       # read in the full data set:
       print(group)
       print(signalname)
-      df <- read.csv(sprintf('ana/%s_%s.csv',group,signalname))
+      df <- read.csv(sprintf('forwardana/%s_%s.csv',group,signalname))
       df <- df[,participants]
       
       # determine length of baseline period and schedule-direction:
@@ -358,13 +358,13 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
     participants <- sprintf('p%d',c(1:32))
 
     if (groupname == 'continuous') {
-      participants <- sprintf('p%d',c(1:15))
+      participants <- sprintf('p%d',c(1:34))
     }
     if (groupname == 'terminal') {
-      participants <- sprintf('p%d',c(2:15))
+      participants <- sprintf('p%d',c(2:33))
     }
     if (groupname == 'cursorjump') {
-      participants <- sprintf('p%d',c(1:15))
+      participants <- sprintf('p%d',c(1:33))
     }
     
     # do each signal for each group
@@ -378,7 +378,7 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
       }
       
       # read in the full data set:
-      rawdf <- read.csv(sprintf('ana/%s_%s.csv',groupname,signalname))
+      rawdf <- read.csv(sprintf('forwardana/%s_%s.csv',groupname,signalname))
       rawdf <- rawdf[,participants]
       
       # determine length of baseline period and schedule-direction:
@@ -483,14 +483,14 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
   write.csv(data.frame( group, signal, phase,
                         lambda, lambda_025, lambda_500, lambda_975,
                         N0, N0_025, N0_500, N0_975),
-            file='ana/asymptoticDecayParameterCIs.csv',
+            file='forwardana/asymptoticDecayParameterCIs.csv',
             quote = F, row.names = F)
      
 }
 
 getSaturationTrials <- function(criterion='CI') {
   
-  df <- read.csv('ana/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
+  df <- read.csv('forwardana/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
   df <- df[which(df$phase == 'main'),]
   
   settings <- asymptoticDecaySettings()
@@ -592,7 +592,7 @@ getSaturationTrials <- function(criterion='CI') {
   
   df <- data.frame(group, signal, avg, lwr, upr)
   
-  write.csv(df, 'ana/saturation_trials.csv', row.names = FALSE, quote = FALSE)
+  write.csv(df, 'forwardana/saturation_trials.csv', row.names = FALSE, quote = FALSE)
   
 }
 
@@ -703,7 +703,7 @@ plotSaturation <- function(xscale='normal', target='svg') {
   } 
   
   
-  df <- read.csv('ana/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
+  df <- read.csv('forwardana/asymptoticDecayParameterCIs.csv', stringsAsFactors = F)
   df <- df[which(df$phase == 'main'),]
   
   settings <- asymptoticDecaySettings()

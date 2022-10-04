@@ -1,107 +1,116 @@
 
 plotreachestogether<- function() {
   source('R/clean&plot.R')
-cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
-td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
-jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
+cd<- read.csv('forwardana/continuous_reaches.csv', header = TRUE)
+td<- read.csv('forwardana/terminal_reaches.csv', header = TRUE)
+jd<- read.csv('forwardana/cursorjump_reaches.csv', header = TRUE)
 
-plot(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "Reaches", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.5)
-data<- cd[,2:16]
+plot(rowMeans(cd[17:136,2:35]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "Reaches", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.5)
+data<- cd[17:136,2:35]
 dataCIs <- trialCI(data = data)
 dataCIs <- dataCIs*-1
-x <-  c(c(1:144), rev(c(1:144)))
+x <-  c(c(1:120), rev(c(1:120)))
 y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
 polygon(x, y, col = rgb(0.04, 0.3, .5, 0.2), border = NA)
 
-lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
-lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+lines(c(1, 20, 20, 120, 120), c(0, 0, 45, 45,45), col = rgb(0., 0., 0.))
 
-lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
-data<- td[,2:15]
+
+lines(rowMeans(td[17:136,2:34]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+data<- td[17:136,2:34]
 dataCIs <- trialCI(data = data)
 dataCIs <- dataCIs*-1
-x <-  c(c(1:144), rev(c(1:144)))
+x <-  c(c(1:120), rev(c(1:120)))
 y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
 polygon(x, y, col = rgb(0.93, 0.47, .26, 0.2), border = NA)
 
 #plot(rowMeans(jd[17:160,2:18]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-lines(rowMeans(jd[,2:16]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-data<- jd[,2:16]
+lines(rowMeans(jd[17:136,2:34]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
+data<- jd[17:136,2:34]
 dataCIs <- trialCI(data = data)
 dataCIs <- dataCIs*-1
-x <-  c(c(1:144), rev(c(1:144)))
+x <-  c(c(1:120), rev(c(1:120)))
 y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
 polygon(x, y, col = rgb(0.23, 0.70, .44, 0.2), border = NA)
 
-lines(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
-lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+lines(rowMeans(cd[17:136,2:35]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
+lines(rowMeans(td[17:136,2:34]*-1, na.rm=TRUE), type = "l", col = "sienna2")
 
 legend(
   5,
-  -15,
-  legend = c("Continuous, n=15", "Terminal, n=14", "Cursor Jump, n=15"),
+  -20,
+  legend = c("Continuous, n=34", "Terminal, n=33", "Cursor Jump, n=33"),
   col = c("Dodgerblue4","sienna2", "mediumseagreen"),
   lty = c(1,1,1),
   lwd = c(2,2,2),
   bty = 'n',
   cex = 1.25
 )
-axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+axis(2, at = c(-45, -35,-25,-15, 0,15, 25,35 ,45), cex.axis = 1.25,
      las = 2)
-axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25)
 
+abline(v = 77, col = 'grey')
+abline(v = 81, col = 'grey')
+abline(v = 85, col = 'grey')
+abline(v = 89, col = 'grey')
 }
 
 plotnocursorstogether<- function() {
   source('R/clean&plot.R')
-  cd<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
-  td<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
-  jd<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
+  cd<- read.csv('forwardana/continuous_nocursors.csv', header = TRUE)
+  td<- read.csv('forwardana/terminal_nocursors.csv', header = TRUE)
+  jd<- read.csv('forwardana/cursorjump_nocursors.csv', header = TRUE)
   
-  plot(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "No-Cursors", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.5)
-  data<- cd[,2:16]
+  plot(rowMeans(cd[17:136,2:35]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4", ylim = c(-50,50), main = "No-Cursors", xlab = "trials", ylab = "Hand Direction [°]", axes = FALSE, cex.lab = 1.5)
+  data<- cd[17:136,2:35]
   dataCIs <- trialCI(data = data)
   dataCIs <- dataCIs*-1
-  x <-  c(c(1:144), rev(c(1:144)))
+  x <-  c(c(1:120), rev(c(1:120)))
   y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
   polygon(x, y, col = rgb(0.04, 0.3, .5, 0.2), border = NA)
   
-  lines(c(1, 20, 20, 120, 120, 128, 128), c(0, 0, 45, 45, -45, -45, 0), col = rgb(0., 0., 0.))
-  lines(c(128, 144), c(0, 0), lty = 2, col = rgb(0., 0., 0.))
+  lines(c(1, 20, 20, 120, 120), c(0, 0, 45, 45, 45), col = rgb(0., 0., 0.))
+
   
-  lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
-  data<- td[,2:15]
+  lines(rowMeans(td[17:136,2:34]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+  data<- td[17:136,2:34]
   dataCIs <- trialCI(data = data)
   dataCIs <- dataCIs*-1
-  x <-  c(c(1:144), rev(c(1:144)))
+  x <-  c(c(1:120), rev(c(1:120)))
   y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
   polygon(x, y, col = rgb(0.93, 0.47, .26, 0.2), border = NA)
   
   #plot(rowMeans(jd[17:160,2:18]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-  lines(rowMeans(jd[,2:16]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
-  data<- jd[,2:16]
+  lines(rowMeans(jd[17:136,2:34]*-1, na.rm=TRUE), type = "l", col = "mediumseagreen")
+  data<- jd[17:136,2:34]
   dataCIs <- trialCI(data = data)
   dataCIs <- dataCIs*-1
-  x <-  c(c(1:144), rev(c(1:144)))
+  x <-  c(c(1:120), rev(c(1:120)))
   y <- c(dataCIs[, 1], rev(dataCIs[, 2]))
   polygon(x, y, col = rgb(0.23, 0.70, .44, 0.2), border = NA)
   
-  lines(rowMeans(cd[,2:16]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
-  lines(rowMeans(td[,2:15]*-1, na.rm=TRUE), type = "l", col = "sienna2")
+  lines(rowMeans(cd[17:136,2:35]*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
+  lines(rowMeans(td[17:136,2:34]*-1, na.rm=TRUE), type = "l", col = "sienna2")
   
   legend(
     5,
-    -15,
-    legend = c("Continuous, n=15", "Terminal, n=14", "Cursor Jump, n=15"),
+    -20,
+    legend = c("Continuous, n=34", "Terminal, n=33", "Cursor Jump, n=33"),
     col = c("Dodgerblue4","sienna2", "mediumseagreen"),
     lty = c(1,1,1),
     lwd = c(2,2,2),
     bty = 'n',
     cex = 1.25
   )
-  axis(2, at = c(-45, -25, 0, 25, 45), cex.axis = 1.25,
+  axis(2, at = c(-45,-35, -25,-15, 0, 15,25,35, 45), cex.axis = 1.25,
        las = 2)
-  axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25, las = 2)
+  axis(1, at = c(1, 20, 120, 128, 144), cex.axis = 1.25)
+  
+  abline(v = 77, col = 'grey')
+  abline(v = 81, col = 'grey')
+  abline(v = 85, col = 'grey')
+  abline(v = 89, col = 'grey')
   
 }
 

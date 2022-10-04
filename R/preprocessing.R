@@ -24,7 +24,7 @@ return(data.frame(participants,conditions,dates,files))
 #start looking at individual data
 #find a way to look at it per target
 getpangles <- function(cond = 1,type = 1, cutoff = 0.3) {
- # newdata <- getpinfo()
+  #newdata <- getpinfo()
 filenames <- newdata$files[newdata$conditions == cond]
 DF <- handleOneFile(filenames[1])
 #pnums <- newdata$participants[newdata$conditions == 1]
@@ -35,7 +35,7 @@ if (cond == 0) {
 rd <- data.frame(matrix(NA,136,length(filenames)))
 }
 rot <- c()
-setwd("summerdata/")
+#setwd("summerdata/")
 for (file in 1:length(filenames)) {
   filename <- filenames[file]
   #pnum <- pnums[1]

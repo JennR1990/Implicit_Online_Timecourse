@@ -70,8 +70,6 @@ write.csv(finalaiming, output, quote = FALSE, row.names = FALSE)
 
 
 
-
-
 getmedianaims<- function() {
 df<-read.csv("AimingAngle/Forward_Fall_Aims.csv", header = TRUE)
 
