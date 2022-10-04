@@ -61,12 +61,19 @@ summary(ncmodel)
 
 
 ```{r SCAPPS figures}
-plotaimingangles()
+svglite(file="figs/Poster Figures_1004a.svg", width=12, height=4, system_fonts=list(sans = "Arial"))
+layout(matrix(1:2, nrow = 1, byrow = TRUE))
 plotreachestogether()
 plotnocursorstogether()
+dev.off()
 
+svglite(file="figs/Poster Figures_1004b.svg", width=12, height=8, system_fonts=list(sans = "Arial"))
+layout(matrix(1:4, nrow = 2, byrow = TRUE))
+plotaimingangles()
 RegressionPLotEL()
 RegressionPLotaiming()
+dev.off()
+plotSaturation()
 
 ```
 
@@ -88,19 +95,19 @@ dev.off()
 
 
 ```{r load data}
-continuous_reaches<- Cleandata("ana/condition 1 trialtype 1_cuttoff0.7.csv")
-continuous_reaches<- continuous_reaches[,-c(4)]
-terminal_reaches<- Cleandata("ana/condition 3 trialtype 1_cuttoff0.7.csv")
-terminal_reaches<- terminal_reaches[,-c(1)]
-cursorJump_reaches<- Cleandata("ana/condition 4 trialtype 1_cuttoff0.7.csv")
-cursorJump_reaches<- cursorJump_reaches[,-c(6,8,12,13)]
+continuous_reaches<- Cleandata('condition 1 trialtype 1_cuttoff0.3.csv')
+write.csv(continuous_reaches, "continuous_reaches.csv", quote=FALSE, row.names = FALSE)
+terminal_reaches<- Cleandata("forwardana/condition 3 trialtype 1_cuttoff0.3.csv")
+write.csv(terminal_reaches, "terminal_reaches.csv", quote=FALSE, row.names = FALSE)
+cursorJump_reaches<- Cleandata("forwardana/condition 4 trialtype 1_cuttoff0.3.csv")
+write.csv(cursorJump_reaches, "cursorjump_reaches.csv", quote=FALSE, row.names = FALSE)
 
-continuous_nocursors<- Cleandata("ana/condition 1 trialtype 0_cuttoff0.7.csv")
-continuous_nocursors<- continuous_nocursors[,-c(4)]
-terminal_nocursors<- Cleandata("ana/condition 3 trialtype 0_cuttoff0.7.csv")
-terminal_reaches<- terminal_reaches[,-c(1)]
-cursorJump_nocursors<- Cleandata("ana/condition 4 trialtype 0_cuttoff0.7.csv")
-cursorJump_nocursors<- cursorJump_nocursors[,-c(6,8,12,13)]
+continuous_nocursors<- Cleandata("forwardana/condition 1 trialtype 0_cuttoff0.3.csv")
+write.csv( continuous_nocursors, "continuous_nocursors.csv", quote=FALSE, row.names = FALSE)
+terminal_nocursors<- Cleandata("forwardana/condition 3 trialtype 0_cuttoff0.3.csv")
+write.csv(terminal_nocursors, "terminal_nocursors.csv", quote=FALSE, row.names = FALSE)
+cursorJump_nocursors<- Cleandata("forwardana/condition 4 trialtype 0_cuttoff0.3.csv")
+write.csv(cursorJump_nocursors, "cursorJump_nocursors.csv", quote=FALSE, row.names = FALSE)
 ```
 
 

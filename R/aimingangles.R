@@ -156,8 +156,8 @@ dY <- seq(min(ja$medianaims),max(ja$medianaims),length.out = nrow(ja))
 polygon(x=c(0,dX,0)+2.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.23, 0.70, .44, 0.2))
 
 
-text(x = 2.2, y = 45.6, labels = "Fully Explicit")
-text(x = 2.2, y = 0.6, labels = "Fully Implicit")
+text(x = 2.1, y = 45.6, labels = "Fully Explicit")
+text(x = 2.1, y = 0.6, labels = "Fully Implicit")
 
 
 }

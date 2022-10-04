@@ -149,9 +149,9 @@ asymptoticDecaySettings <- function() {
   trialsets <- list('main'=c(1:100))
 
   baselines <- list(
-    'continuous'       = list( 'nocursors'=36,  'reaches'=36 ),
-    'terminal'        = c('nocursors'=36,          'reaches'=36),
-    'cursorjump'        = c('nocursors'=36,       'reaches'=36)
+    'continuous'       = list( 'nocursors'=20,  'reaches'=20 ),
+    'terminal'        = c('nocursors'=20,          'reaches'=20),
+    'cursorjump'        = c('nocursors'=20,       'reaches'=20)
   )
   
   schedules <- list( 

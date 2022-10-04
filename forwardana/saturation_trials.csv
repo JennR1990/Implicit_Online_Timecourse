@@ -1,7 +1,7 @@
 group,signal,avg,lwr,upr
-continuous,nocursors,21,10,21
-continuous,reaches,25,24,NA
-terminal,nocursors,33,9,NA
-terminal,reaches,NA,NA,NA
-cursorjump,nocursors,NA,NA,NA
-cursorjump,reaches,14,7,39
+continuous,nocursors,27,27,37
+continuous,reaches,21,15,30
+terminal,nocursors,24,10,44
+terminal,reaches,8,6,10
+cursorjump,nocursors,24,20,35
+cursorjump,reaches,25,18,30

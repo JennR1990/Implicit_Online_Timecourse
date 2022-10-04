@@ -66,8 +66,8 @@ createstartpoints<- function(data) {
 #THis combines the data to make it ready for an ANOVA already updated for Sebastian data
 ANOVAcombine<- function(data) {
   ParticipantARM<- data.frame()
-  participants <- names(data)[2:dim(data)[2]]
-  epochs <- list('R1_early'=c(37,8), 'R1_late'=c(121,16))
+  participants <- names(data)
+  epochs <- list('R1_early'=c(20,8), 'R1_late'=c(104,16))
   Reaches<- c()
   Time<- c()
   ID<- c()
