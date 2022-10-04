@@ -279,9 +279,9 @@ legend(
 RegressionPLotEL <- function() {
   source('R/analysis.R')
   ##Get no-cursor data
-  cdnc<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
-  tdnc<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
-  jdnc<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
+  cdnc<- read.csv('forwardana/continuous_nocursors.csv', header = TRUE)
+  tdnc<- read.csv('forwardana/terminal_nocursors.csv', header = TRUE)
+  jdnc<- read.csv('forwardana/cursorjump_nocursors.csv', header = TRUE)
   
   cdRM<-ANOVAcombine(cdnc)
   Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]
@@ -292,9 +292,9 @@ RegressionPLotEL <- function() {
   
   ##get reach data
   
-  cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
-  td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
-  jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
+  cd<- read.csv('forwardana/continuous_reaches.csv', header = TRUE)
+  td<- read.csv('forwardana/terminal_reaches.csv', header = TRUE)
+  jd<- read.csv('forwardana/cursorjump_reaches.csv', header = TRUE)
   
   cdRMR<-ANOVAcombine(cd)
   ContR<-cdRMR$Reaches[cdRMR$Time == "R1_late"]
@@ -318,10 +318,10 @@ RegressionPLotEL <- function() {
     axes = FALSE, asp = 1, cex.lab = 1.25
   )
   axis(2,
-       at = c( -45,-25, 0, 25,45),
+       at = c( -45,-35,-25,-15, 0,15, 25,35,45),
        cex.axis = 1.2, las = 2)
   axis(1,
-       at = c( -45,-25, 0, 25 ,45),
+       at = c( -45,-35,-25,-15, 0,15, 25,35,45),
        cex.axis = 1.2)
   lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
   abline(v = c(0), lty = 3)
@@ -364,53 +364,46 @@ RegressionPLotEL <- function() {
 }
 
 
-RegressionPLotEC <- function() {
+RegressionPLotaiming <- function() {
 
   ##Get no-cursor data
-  cdnc<- read.csv('ana/continuous_nocursors.csv', header = TRUE)
-  tdnc<- read.csv('ana/terminal_nocursors.csv', header = TRUE)
-  jdnc<- read.csv('ana/cursorjump_nocursors.csv', header = TRUE)
+  cdnc<- read.csv('forwardana/continuous_nocursors.csv', header = TRUE)
+  tdnc<- read.csv('forwardana/terminal_nocursors.csv', header = TRUE)
+  jdnc<- read.csv('forwardana/cursorjump_nocursors.csv', header = TRUE)
   
   
   cdRM<-ANOVAcombine(cdnc)
-  Contnc<-cdRM$Reaches[cdRM$Time == "EC"]
+  Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]
   tdRM<-ANOVAcombine(tdnc)
-  Termnc<-tdRM$Reaches[tdRM$Time == "EC"]
+  Termnc<-tdRM$Reaches[tdRM$Time == "R1_late"]
   jdRM<-ANOVAcombine(jdnc)
-  Jumpnc<-jdRM$Reaches[jdRM$Time == "EC"]
+  Jumpnc<-jdRM$Reaches[jdRM$Time == "R1_late"]
   
   ##get reach data
   
-  cd<- read.csv('ana/continuous_reaches.csv', header = TRUE)
-  td<- read.csv('ana/terminal_reaches.csv', header = TRUE)
-  jd<- read.csv('ana/cursorjump_reaches.csv', header = TRUE)
-  
-  cdRMR<-ANOVAcombine(cd)
-  ContR<-cdRMR$Reaches[cdRMR$Time == "EC"]
-  tdRMR<-ANOVAcombine(td)
-  TermR<-tdRMR$Reaches[tdRMR$Time == "EC"]
-  jdRMR<-ANOVAcombine(jd)
-  JumpR<-jdRMR$Reaches[jdRMR$Time == "EC"]
-  
-  
-  
-  
+
+  all<- read.csv('AimingAngle/Forward_Fall_Participant_Median_Aims.csv', header = TRUE)
+  ContR<- all[all$df.Experiment == "Continuous",1]
+  TermR<- all[all$df.Experiment == "Terminal",1]
+  JumpR<- all[all$df.Experiment == "Cursor-Jump",1]
+
+
   
   plot(
     Contnc ~ ContR,
     col = "dodgerblue4",
-    xlab = 'No-Cursors',
-    ylab = 'Reaches',
-    main = 'Regression During Error Clamp',
+    xlab = 'Aiming Angle',
+    ylab = 'No-Cursors',
+    main = 'Regression During End of Learning',
     xlim = c(-45, 45),
     ylim = c(-45, 45),
     axes = FALSE, asp = 1, cex.lab = 1.25
   )
   axis(2,
-       at = c( -45,-25, 0, 25,45),
+       at = c( -45,-35,-25,-15, 0,15, 25,35,45),
        cex.axis = 1.2, las = 2)
   axis(1,
-       at = c( -45,-25, 0, 25 ,45),
+       at = c(-45,-35,-25,-15, 0,15, 25,35,45),
        cex.axis = 1.2)
   lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
   abline(v = c(0), lty = 3)

@@ -67,7 +67,7 @@ createstartpoints<- function(data) {
 ANOVAcombine<- function(data) {
   ParticipantARM<- data.frame()
   participants <- names(data)[2:dim(data)[2]]
-  epochs <- list('R1_early'=c(21,4), 'R1_late'=c(105,16), 'R2D2'=c(125,4), 'EC'=c(129,16))
+  epochs <- list('R1_early'=c(37,8), 'R1_late'=c(121,16))
   Reaches<- c()
   Time<- c()
   ID<- c()
