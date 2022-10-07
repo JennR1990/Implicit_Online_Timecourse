@@ -1896,6 +1896,27 @@ dev.off()
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29udGludW91c19yZWFjaGVzPC0gQ2xlYW5kYXRhKCdmb3J3YXJkYW5hL2NvbmRpdGlvbiAxIHRyaWFsdHlwZSAxX2N1dHRvZmYwLjMuY3N2JylcbmNvbnRpbnVvdXNfcmVhY2hlczwtQmFzZWxpbmVkYXRhKGNvbnRpbnVvdXNfcmVhY2hlcylcbndyaXRlLmNzdihjb250aW51b3VzX3JlYWNoZXMsIFwiY29udGludW91c19yZWFjaGVzLmNzdlwiLCBxdW90ZT1GQUxTRSwgcm93Lm5hbWVzID0gRkFMU0UpXG50ZXJtaW5hbF9yZWFjaGVzPC0gQ2xlYW5kYXRhKFwiZm9yd2FyZGFuYS9jb25kaXRpb24gMyB0cmlhbHR5cGUgMV9jdXR0b2ZmMC4zLmNzdlwiKVxudGVybWluYWxfcmVhY2hlczwtQmFzZWxpbmVkYXRhKHRlcm1pbmFsX3JlYWNoZXMpXG53cml0ZS5jc3YodGVybWluYWxfcmVhY2hlcywgXCJ0ZXJtaW5hbF9yZWFjaGVzLmNzdlwiLCBxdW90ZT1GQUxTRSwgcm93Lm5hbWVzID0gRkFMU0UpXG5jdXJzb3JKdW1wX3JlYWNoZXM8LSBDbGVhbmRhdGEoXCJmb3J3YXJkYW5hL2NvbmRpdGlvbiA0IHRyaWFsdHlwZSAxX2N1dHRvZmYwLjMuY3N2XCIpXG5jdXJzb3JKdW1wX3JlYWNoZXM8LUJhc2VsaW5lZGF0YShjdXJzb3JKdW1wX3JlYWNoZXMpXG53cml0ZS5jc3YoY3Vyc29ySnVtcF9yZWFjaGVzLCBcImN1cnNvcmp1bXBfcmVhY2hlcy5jc3ZcIiwgcXVvdGU9RkFMU0UsIHJvdy5uYW1lcyA9IEZBTFNFKVxuXG5jb250aW51b3VzX25vY3Vyc29yczwtIENsZWFuZGF0YShcImZvcndhcmRhbmEvY29uZGl0aW9uIDEgdHJpYWx0eXBlIDBfY3V0dG9mZjAuMy5jc3ZcIilcbmNvbnRpbnVvdXNfbm9jdXJzb3JzPC1CYXNlbGluZWRhdGEoY29udGludW91c19ub2N1cnNvcnMpXG53cml0ZS5jc3YoIGNvbnRpbnVvdXNfbm9jdXJzb3JzLCBcImNvbnRpbnVvdXNfbm9jdXJzb3JzLmNzdlwiLCBxdW90ZT1GQUxTRSwgcm93Lm5hbWVzID0gRkFMU0UpXG50ZXJtaW5hbF9ub2N1cnNvcnM8LSBDbGVhbmRhdGEoXCJmb3J3YXJkYW5hL2NvbmRpdGlvbiAzIHRyaWFsdHlwZSAwX2N1dHRvZmYwLjMuY3N2XCIpXG50ZXJtaW5hbF9ub2N1cnNvcnM8LUJhc2VsaW5lZGF0YSh0ZXJtaW5hbF9ub2N1cnNvcnMpXG53cml0ZS5jc3YodGVybWluYWxfbm9jdXJzb3JzLCBcInRlcm1pbmFsX25vY3Vyc29ycy5jc3ZcIiwgcXVvdGU9RkFMU0UsIHJvdy5uYW1lcyA9IEZBTFNFKVxuY3Vyc29ySnVtcF9ub2N1cnNvcnM8LSBDbGVhbmRhdGEoXCJmb3J3YXJkYW5hL2NvbmRpdGlvbiA0IHRyaWFsdHlwZSAwX2N1dHRvZmYwLjMuY3N2XCIpXG5jdXJzb3JKdW1wX3JlYWNoZXM8LUJhc2VsaW5lZGF0YShjdXJzb3JKdW1wX3JlYWNoZXMpXG53cml0ZS5jc3YoY3Vyc29ySnVtcF9ub2N1cnNvcnMsIFwiY3Vyc29ySnVtcF9ub2N1cnNvcnMuY3N2XCIsIHF1b3RlPUZBTFNFLCByb3cubmFtZXMgPSBGQUxTRSlcbmBgYCJ9 -->
+<pre class="r"><code>continuous_reaches&lt;- Cleandata(&#39;forwardana/condition 1 trialtype 1_cuttoff0.3.csv&#39;)
+continuous_reaches&lt;-Baselinedata(continuous_reaches)
+write.csv(continuous_reaches, &quot;continuous_reaches.csv&quot;, quote=FALSE, row.names = FALSE)
+terminal_reaches&lt;- Cleandata(&quot;forwardana/condition 3 trialtype 1_cuttoff0.3.csv&quot;)
+terminal_reaches&lt;-Baselinedata(terminal_reaches)
+write.csv(terminal_reaches, &quot;terminal_reaches.csv&quot;, quote=FALSE, row.names = FALSE)
+cursorJump_reaches&lt;- Cleandata(&quot;forwardana/condition 4 trialtype 1_cuttoff0.3.csv&quot;)
+cursorJump_reaches&lt;-Baselinedata(cursorJump_reaches)
+write.csv(cursorJump_reaches, &quot;cursorjump_reaches.csv&quot;, quote=FALSE, row.names = FALSE)
+
+continuous_nocursors&lt;- Cleandata(&quot;forwardana/condition 1 trialtype 0_cuttoff0.3.csv&quot;)
+continuous_nocursors&lt;-Baselinedata(continuous_nocursors)
+write.csv( continuous_nocursors, &quot;continuous_nocursors.csv&quot;, quote=FALSE, row.names = FALSE)
+terminal_nocursors&lt;- Cleandata(&quot;forwardana/condition 3 trialtype 0_cuttoff0.3.csv&quot;)
+terminal_nocursors&lt;-Baselinedata(terminal_nocursors)
+write.csv(terminal_nocursors, &quot;terminal_nocursors.csv&quot;, quote=FALSE, row.names = FALSE)
+cursorJump_nocursors&lt;- Cleandata(&quot;forwardana/condition 4 trialtype 0_cuttoff0.3.csv&quot;)
+cursorJump_reaches&lt;-Baselinedata(cursorJump_reaches)
+write.csv(cursorJump_nocursors, &quot;cursorJump_nocursors.csv&quot;, quote=FALSE, row.names = FALSE)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
