@@ -95,18 +95,24 @@ dev.off()
 
 
 ```{r load data}
-continuous_reaches<- Cleandata('condition 1 trialtype 1_cuttoff0.3.csv')
+continuous_reaches<- Cleandata('forwardana/condition 1 trialtype 1_cuttoff0.3.csv')
+continuous_reaches<-Baselinedata(continuous_reaches)
 write.csv(continuous_reaches, "continuous_reaches.csv", quote=FALSE, row.names = FALSE)
 terminal_reaches<- Cleandata("forwardana/condition 3 trialtype 1_cuttoff0.3.csv")
+terminal_reaches<-Baselinedata(terminal_reaches)
 write.csv(terminal_reaches, "terminal_reaches.csv", quote=FALSE, row.names = FALSE)
 cursorJump_reaches<- Cleandata("forwardana/condition 4 trialtype 1_cuttoff0.3.csv")
+cursorJump_reaches<-Baselinedata(cursorJump_reaches)
 write.csv(cursorJump_reaches, "cursorjump_reaches.csv", quote=FALSE, row.names = FALSE)
 
 continuous_nocursors<- Cleandata("forwardana/condition 1 trialtype 0_cuttoff0.3.csv")
+continuous_nocursors<-Baselinedata(continuous_nocursors)
 write.csv( continuous_nocursors, "continuous_nocursors.csv", quote=FALSE, row.names = FALSE)
 terminal_nocursors<- Cleandata("forwardana/condition 3 trialtype 0_cuttoff0.3.csv")
+terminal_nocursors<-Baselinedata(terminal_nocursors)
 write.csv(terminal_nocursors, "terminal_nocursors.csv", quote=FALSE, row.names = FALSE)
 cursorJump_nocursors<- Cleandata("forwardana/condition 4 trialtype 0_cuttoff0.3.csv")
+cursorJump_reaches<-Baselinedata(cursorJump_reaches)
 write.csv(cursorJump_nocursors, "cursorJump_nocursors.csv", quote=FALSE, row.names = FALSE)
 ```
 

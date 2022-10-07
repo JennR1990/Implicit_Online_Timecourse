@@ -39,7 +39,7 @@ lines(rowMeans(td*-1, na.rm=TRUE), type = "l", col = "sienna2")
 legend(
   40,
   20,
-  legend = c("Continuous, n=34", "Terminal, n=33", "Cursor Jump, n=33"),
+  legend = c("Continuous, n=33", "Terminal, n=30", "Cursor Jump, n=29"),
   col = c("Dodgerblue4","sienna2", "mediumseagreen"),
   lty = c(1,1,1),
   lwd = c(2,2,2),
@@ -54,6 +54,10 @@ abline(v = 77, col = 'grey')
 abline(v = 81, col = 'grey')
 abline(v = 85, col = 'grey')
 abline(v = 89, col = 'grey')
+abline(v = 93, col = 'grey')
+abline(v = 97, col = 'grey')
+abline(v = 101, col = 'grey')
+abline(v = 105, col = 'grey')
 }
 
 plotnocursorstogether<- function() {
@@ -93,16 +97,16 @@ plotnocursorstogether<- function() {
   lines(rowMeans(cd*-1, na.rm=TRUE), type = "l", col = "dodgerblue4")
   lines(rowMeans(td*-1, na.rm=TRUE), type = "l", col = "sienna2")
   
-  legend(
-    40,
-    20,
-    legend = c("Continuous, n=34", "Terminal, n=33", "Cursor Jump, n=33"),
-    col = c("Dodgerblue4","sienna2", "mediumseagreen"),
-    lty = c(1,1,1),
-    lwd = c(2,2,2),
-    bty = 'n',
-    cex = 1.25
-  )
+  # legend(
+  #   40,
+  #   20,
+  #   legend = c("Continuous, n=34", "Terminal, n=33", "Cursor Jump, n=33"),
+  #   col = c("Dodgerblue4","sienna2", "mediumseagreen"),
+  #   lty = c(1,1,1),
+  #   lwd = c(2,2,2),
+  #   bty = 'n',
+  #   cex = 1.25
+  # )
   axis(2, at = c( 0, 15,25,35, 45), cex.axis = 1.25,
        las = 2)
   axis(1, at = c(1, 20, 120), cex.axis = 1.25)
@@ -111,7 +115,10 @@ plotnocursorstogether<- function() {
   abline(v = 81, col = 'grey')
   abline(v = 85, col = 'grey')
   abline(v = 89, col = 'grey')
-  
+  abline(v = 93, col = 'grey')
+  abline(v = 97, col = 'grey')
+  abline(v = 101, col = 'grey')
+  abline(v = 105, col = 'grey')
 }
 
 
@@ -284,11 +291,11 @@ RegressionPLotEL <- function() {
   jdnc<- read.csv('forwardana/cursorjump_nocursors.csv', header = TRUE)
   
   cdRM<-ANOVAcombine(cdnc)
-  Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]
+  Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]*-1
   tdRM<-ANOVAcombine(tdnc)
-  Termnc<-tdRM$Reaches[tdRM$Time == "R1_late"]
+  Termnc<-tdRM$Reaches[tdRM$Time == "R1_late"]*-1
   jdRM<-ANOVAcombine(jdnc)
-  Jumpnc<-jdRM$Reaches[jdRM$Time == "R1_late"]
+  Jumpnc<-jdRM$Reaches[jdRM$Time == "R1_late"]*-1
   
   ##get reach data
   
@@ -297,11 +304,11 @@ RegressionPLotEL <- function() {
   jd<- read.csv('forwardana/cursorjump_reaches.csv', header = TRUE)
   
   cdRMR<-ANOVAcombine(cd)
-  ContR<-cdRMR$Reaches[cdRMR$Time == "R1_late"]
+  ContR<-cdRMR$Reaches[cdRMR$Time == "R1_late"]*-1
   tdRMR<-ANOVAcombine(td)
-  TermR<-tdRMR$Reaches[tdRMR$Time == "R1_late"]
+  TermR<-tdRMR$Reaches[tdRMR$Time == "R1_late"]*-1
   jdRMR<-ANOVAcombine(jd)
-  JumpR<-jdRMR$Reaches[jdRMR$Time == "R1_late"]
+  JumpR<-jdRMR$Reaches[jdRMR$Time == "R1_late"]*-1
   
   
   
@@ -312,32 +319,32 @@ RegressionPLotEL <- function() {
     col = "dodgerblue4",
     ylab = 'No-Cursors',
     xlab = 'Reaches',
-    main = 'Regression During Late Learning',
-    xlim = c(-45, 45),
-    ylim = c(-45, 45),
+    main = 'Reelationship between reaches & No-Cursors',
+    xlim = c(0, 60),
+    ylim = c(0, 60),
     axes = FALSE, asp = 1, cex.lab = 1.25
   )
   axis(2,
-       at = c( -45,-35,-25,-15, 0,15, 25,35,45),
+       at = c(0,15, 30,45,60),
        cex.axis = 1.2, las = 2)
   axis(1,
-       at = c( -45,-35,-25,-15, 0,15, 25,35,45),
+       at = c(0,15,30,45,60),
        cex.axis = 1.2)
-  lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
-  abline(v = c(0), lty = 3)
-  lm<-plotRegressionWithCI(ContR, Contnc, colors = c(rgb(0.04, 0.3, .5, 0.2), 'dodgerblue4'))
+  #lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
+  #abline(v = c(0), lty = 3)
+  lm<-plotRegressionWithCI(ContR, Contnc, colors = c(rgb(0.04, 0.3, .5, 0.1), 'dodgerblue4'))
   pr<-summary(lm)$r.squared
   print(summary(lm)$coefficients[2,4])
   
   
   points(Jumpnc ~ JumpR, col = "mediumseagreen" )
-  em<-plotRegressionWithCI(JumpR, Jumpnc, colors = c(rgb(0.23, 0.70, .44, 0.2), "mediumseagreen"))
+  em<-plotRegressionWithCI(JumpR, Jumpnc, colors = c(rgb(0.23, 0.70, .44, 0.1), "mediumseagreen"))
   er<-summary(em)$r.squared
   print(summary(em)$coefficients[2,4])
   
   
   points(Termnc ~ TermR, col = "Sienna2")
-  tm<-plotRegressionWithCI(TermR, Termnc, colors = c(rgb(0.93, 0.47, .26, 0.2), "sienna2"))
+  tm<-plotRegressionWithCI(TermR, Termnc, colors = c(rgb(0.93, 0.47, .26, 0.1), "sienna2"))
   tr<-summary(tm)$r.squared
   print(summary(tm)$coefficients[2,4])
   
@@ -347,8 +354,8 @@ RegressionPLotEL <- function() {
   label2<- sprintf("Terminal, r2=%.2f", tr)
   label3<- sprintf("Cursor Jump, r2=%.2f", er)
   legend(
-    -50,
-    40,
+    0,
+    55,
     legend = c(
       label1,
       label2,
@@ -373,11 +380,11 @@ RegressionPLotaiming <- function() {
   
   
   cdRM<-ANOVAcombine(cdnc)
-  Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]
+  Contnc<-cdRM$Reaches[cdRM$Time == "R1_late"]*-1
   tdRM<-ANOVAcombine(tdnc)
-  Termnc<-tdRM$Reaches[tdRM$Time == "R1_late"]
+  Termnc<-tdRM$Reaches[tdRM$Time == "R1_late"]*-1
   jdRM<-ANOVAcombine(jdnc)
-  Jumpnc<-jdRM$Reaches[jdRM$Time == "R1_late"]
+  Jumpnc<-jdRM$Reaches[jdRM$Time == "R1_late"]*-1
   
   ##get reach data
   
@@ -392,34 +399,34 @@ RegressionPLotaiming <- function() {
   plot(
     Contnc ~ ContR,
     col = "dodgerblue4",
-    xlab = 'Aiming Angle',
-    ylab = 'No-Cursors',
-    main = 'Regression During End of Learning',
-    xlim = c(-45, 45),
-    ylim = c(-45, 45),
+    xlab = 'Aiming Direction - Explicit',
+    ylab = 'No-Cursors - Implicit',
+    main = 'Relationship of Implcit and Explicit',
+    xlim = c(0, 45),
+    ylim = c(0, 45),
     axes = FALSE, asp = 1, cex.lab = 1.25
   )
   axis(2,
-       at = c( -45,-35,-25,-15, 0,15, 25,35,45),
+       at = c( 0,15,30,45),
        cex.axis = 1.2, las = 2)
   axis(1,
-       at = c(-45,-35,-25,-15, 0,15, 25,35,45),
+       at = c( 0,15,30,45),
        cex.axis = 1.2)
-  lines(x = c(-45:45), y = rep(0, times = length(-45:45)), lty = 3)
-  abline(v = c(0), lty = 3)
-  lm<-plotRegressionWithCI(ContR, Contnc, colors = c(rgb(0.04, 0.3, .5, 0.2), 'dodgerblue4'))
+  #lines(x = c(0:45), y = rep(0, times = length(0:45)), lty = 3)
+  #abline(v = c(0), lty = 3)
+  lm<-plotRegressionWithCI(ContR, Contnc, colors = c(rgb(0.04, 0.3, .5, 0.1), 'dodgerblue4'))
   pr<-summary(lm)$r.squared
   print(summary(lm)$coefficients[2,4])
 
   
   points(Jumpnc ~ JumpR, col = "mediumseagreen" )
-  em<-plotRegressionWithCI(JumpR, Jumpnc, colors = c(rgb(0.23, 0.70, .44, 0.2), "mediumseagreen"))
+  em<-plotRegressionWithCI(JumpR, Jumpnc, colors = c(rgb(0.23, 0.70, .44, 0.1), "mediumseagreen"))
   er<-summary(em)$r.squared
   print(summary(em)$coefficients[2,4])
   
   
   points(Termnc ~ TermR, col = "Sienna2")
-  tm<-plotRegressionWithCI(TermR, Termnc, colors = c(rgb(0.93, 0.47, .26, 0.2), "sienna2"))
+  tm<-plotRegressionWithCI(TermR, Termnc, colors = c(rgb(0.93, 0.47, .26, 0.1), "sienna2"))
   tr<-summary(tm)$r.squared
   print(summary(tm)$coefficients[2,4])
 
@@ -429,8 +436,8 @@ RegressionPLotaiming <- function() {
   label2<- sprintf("Terminal, r2=%.2f", tr)
   label3<- sprintf("Cursor Jump, r2=%.2f", er)
   legend(
-    -50,
-    40,
+    30,
+    48,
     legend = c(
       label1,
       label2,

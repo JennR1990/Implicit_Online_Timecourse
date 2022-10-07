@@ -179,7 +179,7 @@ asymptoticDecaySettings <- function() {
   
 }
 
-bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
+bootstrapSemiAsymptoticDecayModels <- function(bootstraps=10) {
   
   settings <- asymptoticDecaySettings()
   
@@ -195,13 +195,13 @@ bootstrapSemiAsymptoticDecayModels <- function(bootstraps=5) {
     
     participants <- sprintf('p%d',c(1:32))
     if (group == 'continuous') {
-      participants <- sprintf('p%d',c(1:34))
+      participants <- sprintf('p%d',c(1:33))
     }
     if (group == 'terminal') {
-      participants <- sprintf('p%d',c(1:33))
+      participants <- sprintf('p%d',c(1:30))
     }
     if (group == 'cursorjump') {
-      participants <- sprintf('p%d',c(1:33))
+      participants <- sprintf('p%d',c(1:29))
     }
 
     
@@ -358,13 +358,13 @@ getAsymptoticDecayParameterCIs <- function(semi=TRUE) {
     participants <- sprintf('p%d',c(1:32))
 
     if (groupname == 'continuous') {
-      participants <- sprintf('p%d',c(1:34))
+      participants <- sprintf('p%d',c(1:33))
     }
     if (groupname == 'terminal') {
-      participants <- sprintf('p%d',c(2:33))
+      participants <- sprintf('p%d',c(2:30))
     }
     if (groupname == 'cursorjump') {
-      participants <- sprintf('p%d',c(1:33))
+      participants <- sprintf('p%d',c(1:29))
     }
     
     # do each signal for each group
@@ -685,7 +685,7 @@ plotSaturation <- function(xscale='normal', target='svg') {
   fonts <- list(sans = "Arial", mono = "Arial")
   if (target == 'svg') {
     library('svglite')
-    svglite::svglite(file='figs/Saturation Plot.svg', width=8, height=6, bg='white', system_fonts=fonts)
+    svglite::svglite(file='figs/Saturation Plot_updated.svg', width=8, height=6, bg='white', system_fonts=fonts)
     
   }
   if (target == 'pdf') {

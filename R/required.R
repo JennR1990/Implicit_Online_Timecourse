@@ -88,3 +88,32 @@ cnames<- names(cursorjump_reaches[2:ncol(cursorjump_reaches)])
 names(cjsp)<- cnames
 write.csv(cjsp, file = "ana/cursorjump_slowprocess.csv", quote = FALSE, row.names = FALSE)
 }
+
+
+ Baselinedata<- function(data) {
+  
+  for (i in 1:ncol(data)){
+    average<- mean(data[1:20,i], na.rm = TRUE)
+    data[,i]<- data[,i]-average
+  }
+   return(data) 
+   
+ }
+ 
+ 
+ Getasymptotes<- function(){
+ 
+ cd<- read.csv('forwardana/continuous_reaches.csv', header = TRUE)
+ td<- read.csv('forwardana/terminal_reaches.csv', header = TRUE)
+ jd<- read.csv('forwardana/cursorjump_reaches.csv', header = TRUE)
+ 
+ cdRMR<-ANOVAcombine(cd)
+ ContR<-cdRMR$Reaches[cdRMR$Time == "R1_late"]
+ tdRMR<-ANOVAcombine(td)
+ TermR<-tdRMR$Reaches[tdRMR$Time == "R1_late"]
+ jdRMR<-ANOVAcombine(jd)
+ JumpR<-jdRMR$Reaches[jdRMR$Time == "R1_late"]
+
+ allRM<- c(ContR , TermR, JumpR)
+write.csv(allRM, "learning asymptote.csv", quote = FALSE, row.names = FALSE)
+}

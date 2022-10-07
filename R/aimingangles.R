@@ -111,9 +111,9 @@ ca<- medianaims[medianaims$df.Experiment == "Continuous",]
 ta<- medianaims[medianaims$df.Experiment == "Terminal",]
 ja<- medianaims[medianaims$df.Experiment == "Cursor-Jump",]
 
-plot(100,100,xlim = c(.75,2.25), ylim = c(0,55), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "median aiming angle", cex = 1.25, cex.lab = 1.25)
+plot(100,100,xlim = c(.75,2.25), ylim = c(-10,60), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "median aiming angle", cex = 1.25, cex.lab = 1.25)
 axis(1, at=c(1,1.5,2), labels = c("continuous", 'terminal', 'cursorjump'), cex.axis = 1.25)
-axis(2, at = c(0,10,20,30,40,50), las = 2, cex.axis = 1.25)
+axis(2, at = c(-10,0,10,20,30,40,50,60), las = 2, cex.axis = 1.25)
 points(x = rep(1, times = nrow(ca)),y=ca$medianaims, col = "dodgerblue")
 points(x = rep(1.5, times = nrow(ta)),y=ta$medianaims, col = "sienna2")
 points(x = rep(2, times = nrow(ja)),y=ja$medianaims, col = "mediumseagreen")
@@ -126,9 +126,9 @@ upper<-t.interval(ca$medianaims)[2]
 x<- c(.95,1.05,1.05,.95)
 y<- c(lower,lower,upper,upper)
 polygon(x,y,col = rgb(0.04, 0.3, .5, 0.2), border = NA)
-d<- density(ca$medianaims, n=24,from = 0.5, to = 35, bw = 1)$y
+d<- density(ca$medianaims, n=24,from = -10, to = 60, bw = 2)$y
 dX <- (d / sum(d)) 
-dY <- seq(0.5,35,length.out = 24)
+dY <- seq(-10,60,length.out = 24)
 polygon(x=c(0,dX,0)+1.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.04, 0.3, .5, 0.2))
 
 
@@ -138,9 +138,10 @@ upper<-t.interval(ta$medianaims)[2]
 x<- c(1.45,1.55,1.55,1.45)
 y<- c(lower,lower,upper,upper)
 polygon(x,y,col = rgb(0.93, 0.47, .26, 0.2), border = NA)
-d<- density(ta$medianaims, n=nrow(ta),from = min(ta$medianaims), to = max(ta$medianaims), bw = 1)$y
+#d<- density(ta$medianaims, n=nrow(ta),from = min(ta$medianaims), to = max(ta$medianaims), bw = 1)$y
+d<- density(ta$medianaims, n=nrow(ta),from = -10, to = 60, bw = 2)$y
 dX <- (d / sum(d)) 
-dY <- seq(min(ta$medianaims),max(ta$medianaims),length.out = nrow(ta))
+dY <- seq(-10,60,length.out = nrow(ta))
 polygon(x=c(0,dX,0)+1.57, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.93, 0.47, .26, 0.2))
 
 
@@ -150,9 +151,9 @@ upper<-t.interval(ja$medianaims)[2]
 x<- c(1.95,2.05,2.05,1.95)
 y<- c(lower,lower,upper,upper)
 polygon(x,y,col = rgb(0.23, 0.70, .44, 0.2), border = NA)
-d<- density(ja$medianaims, n=nrow(ja),from = min(ja$medianaims), to = max(ja$medianaims), bw = 1)$y
+d<- density(ja$medianaims, n=nrow(ja),from = -10, to = 60, bw = 2)$y
 dX <- (d / sum(d)) 
-dY <- seq(min(ja$medianaims),max(ja$medianaims),length.out = nrow(ja))
+dY <- seq(-10,60,length.out = nrow(ja))
 polygon(x=c(0,dX,0)+2.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.23, 0.70, .44, 0.2))
 
 
