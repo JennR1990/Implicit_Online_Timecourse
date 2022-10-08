@@ -372,25 +372,29 @@ t.interval = function(data, variance = var(data, na.rm = TRUE), conf.level = 0.9
 
 plotlearningasymptotes<- function() {
   
-  filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  #filenames<- c("summerana/condition 1 trialtype 1_cuttoff0.7.csv","summerana/condition 1 trialtype 0_cuttoff0.7.csv","summerana/condition 3 trialtype 1_cuttoff0.7.csv","summerana/condition 3 trialtype 0_cuttoff0.7.csv","summerana/condition 4 trialtype 1_cuttoff0.7.csv","summerana/condition 4 trialtype 0_cuttoff0.7.csv")
+  filenames<- c("forwardana/continuous_reaches.csv","forwardana/continuous_nocursors.csv","forwardana/terminal_reaches.csv"
+                , "forwardana/terminal_nocursors.csv", "forwardana/cursorjump_reaches.csv", "forwardana/cursorJump_nocursors.csv")
+  
+                                                                                              
   
   df<- read.csv(filenames[2])
-  newdf<-df[113:136,2:ncol(df)]
+  newdf<-df
   contmedians<-apply(newdf, 2, median, na.rm=TRUE)
   
   df<- read.csv(filenames[4])
-  newdf<-df[113:136,2:ncol(df)]
+  newdf<-df
   termmedians<-apply(newdf, 2, median, na.rm=TRUE)
   
   
   df<- read.csv(filenames[6])
-  newdf<-df[113:136,2:ncol(df)]
+  newdf<-df
   Jumpmedians<-apply(newdf, 2, median, na.rm=TRUE)
   
   
-  plot(100,100,xlim = c(.75,2.25), ylim = c(0,55), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "Median No-Cursor in last 24 trials", cex = 1.25, cex.lab = 1.25)
+  plot(100,100,xlim = c(.75,2.25), ylim = c(-10,50), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "Median No-Cursor in last 24 trials", cex = 1.25, cex.lab = 1.25)
   axis(1, at=c(1,1.5,2), labels = c("continuous", 'terminal', 'cursorjump'), cex.axis = 1.25)
-  axis(2, at = c(0,10,20,30,40,50), las = 2, cex.axis = 1.25)
+  axis(2, at = c(-10,0,10,20,30,40,50), las = 2, cex.axis = 1.25)
   points(x = rep(1, times = length(contmedians)),y=contmedians*-1, col = "dodgerblue")
   points(x = rep(1.5, times = length(termmedians)),y=termmedians*-1, col = "sienna2")
   points(x = rep(2, times = length(Jumpmedians)),y=Jumpmedians*-1, col = "mediumseagreen")
@@ -403,9 +407,9 @@ plotlearningasymptotes<- function() {
   x<- c(.95,1.05,1.05,.95)
   y<- c(lower,lower,upper,upper)
   polygon(x,y,col = rgb(0.04, 0.3, .5, 0.2), border = NA)
-  d<- density(contmedians*-1, n=24,from = min(contmedians*-1), to = max(contmedians*-1), bw = 1)$y
+  d<- density(contmedians*-1, n=24,from = -10, to = 60, bw = 2)$y
   dX <- (d / sum(d)) 
-  dY <- seq(min(contmedians*-1),max(contmedians*-1),length.out = 24)
+  dY <- seq(-10,60,length.out = 24)
   polygon(x=c(0,dX,0)+1.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.04, 0.3, .5, 0.2))
   
   
@@ -415,9 +419,9 @@ plotlearningasymptotes<- function() {
   x<- c(1.45,1.55,1.55,1.45)
   y<- c(lower,lower,upper,upper)
   polygon(x,y,col = rgb(0.93, 0.47, .26, 0.2), border = NA)
-  d<- density(termmedians*-1, n=length(termmedians),from = min(termmedians*-1), to = max(termmedians*-1), bw = 1)$y
+  d<- density(termmedians*-1, n=length(termmedians),from = -10, to = 60, bw = 2)$y
   dX <- (d / sum(d)) 
-  dY <- seq(min(termmedians*-1),max(termmedians*-1),length.out = length(termmedians*-1))
+  dY <- seq(-10,60,length.out = length(termmedians*-1))
   polygon(x=c(0,dX,0)+1.57, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.93, 0.47, .26, 0.2))
   
   
@@ -427,9 +431,9 @@ plotlearningasymptotes<- function() {
   x<- c(1.95,2.05,2.05,1.95)
   y<- c(lower,lower,upper,upper)
   polygon(x,y,col = rgb(0.23, 0.70, .44, 0.2), border = NA)
-  d<- density(Jumpmedians*-1, n=length(Jumpmedians*-1),from = min(Jumpmedians*-1), to = max(Jumpmedians*-1), bw = 1)$y
+  d<- density(Jumpmedians*-1, n=length(Jumpmedians*-1),from = -10, to = 60, bw = 2)$y
   dX <- (d / sum(d)) 
-  dY <- seq(min(Jumpmedians*-1),max(Jumpmedians*-1),length.out = length(Jumpmedians*-1))
+  dY <- seq(-10,60,length.out = length(Jumpmedians*-1))
   polygon(x=c(0,dX,0)+2.07, y=c(dY[1],dY,dY[length(dY)]), border=NA, col=rgb(0.23, 0.70, .44, 0.2))
   
   
