@@ -111,9 +111,9 @@ ca<- medianaims[medianaims$df.Experiment == "Continuous",]
 ta<- medianaims[medianaims$df.Experiment == "Terminal",]
 ja<- medianaims[medianaims$df.Experiment == "Cursor-Jump",]
 
-plot(100,100,xlim = c(.75,2.25), ylim = c(-10,60), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "median aiming angle", cex = 1.25, cex.lab = 1.25)
-axis(1, at=c(1,1.5,2), labels = c("continuous", 'terminal', 'cursorjump'), cex.axis = 1.25)
-axis(2, at = c(-10,0,10,20,30,40,50,60), las = 2, cex.axis = 1.25)
+plot(100,100,xlim = c(.75,2.25), ylim = c(-10,50), xlab = "Feedback Group", ylab = "Aiming Direction [°]", axes = FALSE, main = "Median Aiming Angle", cex = 1.25, cex.lab = 1.25)
+axis(1, at=c(1,1.5,2), labels = c("Continuous", 'Terminal', 'Cursor Jump'), cex.axis = 1.25)
+axis(2, at = c(-10,0,10,20,30,40,50), las = 2, cex.axis = 1.25)
 points(x = rep(1, times = nrow(ca)),y=ca$medianaims, col = "dodgerblue")
 points(x = rep(1.5, times = nrow(ta)),y=ta$medianaims, col = "sienna2")
 points(x = rep(2, times = nrow(ja)),y=ja$medianaims, col = "mediumseagreen")

@@ -392,8 +392,8 @@ plotlearningasymptotes<- function() {
   Jumpmedians<-apply(newdf, 2, median, na.rm=TRUE)
   
   
-  plot(100,100,xlim = c(.75,2.25), ylim = c(-10,50), xlab = "Feedback Group", ylab = "Aim Deviation [°]", axes = FALSE, main = "Median No-Cursor in last 24 trials", cex = 1.25, cex.lab = 1.25)
-  axis(1, at=c(1,1.5,2), labels = c("continuous", 'terminal', 'cursorjump'), cex.axis = 1.25)
+  plot(100,100,xlim = c(.75,2.25), ylim = c(-10,50), xlab = "Feedback Group", ylab = "Hand Direction [°]", axes = FALSE, main = "Median Reach Aftereffects", cex = 1.25, cex.lab = 1.25)
+  axis(1, at=c(1,1.5,2), labels = c("Continuous", 'Terminal', 'Cursor Jump'), cex.axis = 1.25)
   axis(2, at = c(-10,0,10,20,30,40,50), las = 2, cex.axis = 1.25)
   points(x = rep(1, times = length(contmedians)),y=contmedians*-1, col = "dodgerblue")
   points(x = rep(1.5, times = length(termmedians)),y=termmedians*-1, col = "sienna2")
