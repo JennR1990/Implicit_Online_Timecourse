@@ -63,18 +63,18 @@ summary(ncmodel)
 ```{r SCAPPS figures}
 svglite(file="figs/Poster Figures_1004a.svg", width=12, height=4, system_fonts=list(sans = "Arial"))
 layout(matrix(1:2, nrow = 1, byrow = TRUE))
-plotreachestogether()
-plotnocursorstogether()
+plotreachestogether() #comes from CVR_poster_plots_2022 script
+plotnocursorstogether()  #comes from CVR_poster_plots_2022 script
 dev.off()
 
 svglite(file="figs/Poster Figures_1004b.svg", width=12, height=8, system_fonts=list(sans = "Arial"))
 layout(matrix(1:4, nrow = 2, byrow = TRUE))
-plotaimingangles()
-plotlearningasymptotes()
-RegressionPLotEL()
-RegressionPLotaiming()
+plotaimingangles() # comes from aimingangles script
+plotlearningasymptotes() #comes from clean&plot script
+RegressionPLotEL()  #comes from CVR_poster_plots_2022 script
+RegressionPLotaiming() #comes from CVR_poster_plots_2022 script
 dev.off()
-plotSaturation()
+plotSaturation() # coems from asymptoticdecaymodel script
 
 ```
 
