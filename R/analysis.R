@@ -67,7 +67,7 @@ createstartpoints<- function(data) {
 ANOVAcombine<- function(data) {
   ParticipantARM<- data.frame()
   participants <- names(data)
-  epochs <- list('R1_early'=c(20,8), 'R1_late'=c(104,16))
+  epochs <- list('R1_early'=c(40,16), 'R1_late'=c(104,16))
   Reaches<- c()
   Time<- c()
   ID<- c()
@@ -130,7 +130,7 @@ PrepdataforANOVA <- function() {
   continuousNC_RM$Experiment<- rep("Continuous", times = nrow(continuousNC_RM))
   terminalNC_RM<-ANOVAcombine(terminal_nocursors)
   terminalNC_RM$Experiment<- rep("Terminal", times = nrow(terminalNC_RM))
-  cursorJumpNC_RM<-ANOVAcombine(cursorjump_nocursors)
+  cursorJumpNC_RM<-ANOVAcombine(cursorJump_nocursors)
   cursorJumpNC_RM$Experiment<- rep("CursorJump", times = nrow(cursorJumpNC_RM))
   
   AllData<- rbind(continuousR_RM,terminalR_RM,cursorJumpR_RM,continuousNC_RM,terminalNC_RM,cursorJumpNC_RM)
@@ -179,7 +179,6 @@ ANOVAanalysis<- function(AllDataANOVA){
   fullmodel <- ezANOVA(data=AllDataANOVA,
                        dv=Reaches,
                        wid=ID,
-                       within=Time,
                        between = Experiment,
                        type=3,
                        return_aov=TRUE)

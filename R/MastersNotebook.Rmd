@@ -128,7 +128,7 @@ TtestData<- PrepdataforT()
 
 
 ```{r running analysis}
-rmodel<- ANOVAanalysis(anovadata[anovadata$Task == "Reaches",])
+rmodel<- ANOVAanalysis(AllDataANOVA[AllDataANOVA$Task == "Reaches" & AllDataANOVA$Time == "R1_early",])
 rmodel
 ncmodel<- ANOVAanalysis(anovadata[anovadata$Task == "No-Cursors",])
 ncmodel
@@ -144,3 +144,15 @@ IndependentT(TtestData, "Terminal", "CursorJump", "No-Cursors")
   
 
 ```
+
+
+```{r prep data for stats}
+
+CRRM<- ANOVAcombine(continuous_reaches)
+CNCRM<- ANOVAcombine(continuous_nocursors)
+CJRRM<- ANOVAcombine(cursorjump_reaches)
+CJNCRM<- ANOVAcombine(cursorJump_nocursors)
+TRRM<- ANOVAcombine(terminal_reaches)
+TNCRM<- ANOVAcombine(terminal_nocursors)
+
+
